@@ -1,4 +1,4 @@
-name: Kingdoms-Auspice-Addon
+name: Kingdoms-Addon-Auspice
 version: '${version}'
 main: top.mckingdom.auspice.AuspiceAddon
 api-version: '1.13'
