@@ -13,6 +13,7 @@ public class RelationAttributeAutoRegister extends RelationAttribute {
 
     public static final RelationAttribute BEACON_EFFECTS = register("AuspiceAddon", "BEACON_EFFECTS");
     public static final RelationAttribute ENDER_PEARL_TELEPORT = register("AuspiceAddon", "ENDER_PEARL_TELEPORT");
+    public static final RelationAttribute DIRECTLY_TRANSFER_MEMBER = register("AuspiceAddon", "DIRECTLY_TRANSFER_MEMBER");
 
     public RelationAttributeAutoRegister(Namespace namespace) {
         super(namespace);

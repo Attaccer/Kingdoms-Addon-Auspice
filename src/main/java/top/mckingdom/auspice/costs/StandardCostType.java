@@ -54,6 +54,7 @@ public class StandardCostType {
 
     /**
      * 王国的最大土地数量调节器
+     * maxLandsModifier
      */
     public static final Cost<Kingdom, Integer> COST_KINGDOM_MAX_LANDS_MODIFIER = new Cost<>(new Namespace("AuspiceAddon", "KINGDOM_MAX_LANDS_MODIFIER")) {
 
@@ -73,6 +74,7 @@ public class StandardCostType {
 
     /**
      * 联邦的资源点
+     * resource points of nation
      */
     public static final Cost<Nation, Long> COST_NATION_RP = new Cost<>(new Namespace("AuspiceAddon", "NATION_RP")) {
 
