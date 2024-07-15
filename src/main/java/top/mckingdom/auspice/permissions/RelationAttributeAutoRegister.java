@@ -34,7 +34,7 @@ public class RelationAttributeAutoRegister extends RelationAttribute {
      * @return 你所注册的外交属性
      */
     public static RelationAttribute register(String namespace, String keyword) {
-        Namespace ns = new Namespace(namespace, keyword);;
+        Namespace ns = new Namespace(namespace, keyword);
         RelationAttributeAutoRegister attr = new RelationAttributeAutoRegister(ns);
         Companion.attributeMap.put(ns, attr);
         attr.setHash(Companion.attributeMap.size() + 514);
