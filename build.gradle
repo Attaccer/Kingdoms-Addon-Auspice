@@ -22,6 +22,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
     compileOnly(files("libs/KingdomsX-1.16.20.5.jar"))
     compileOnly(files("libs/xseries-9.9.0-remapped.jar"))
+//    compileOnly "com.github.cryptomorin:kingdoms:1.16.20.5"
 }
 
 def targetJavaVersion = 17

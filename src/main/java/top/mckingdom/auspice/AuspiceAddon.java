@@ -4,7 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.addons.Addon;
+import org.kingdoms.commands.general.resourcepoints.transfer.CommandResourcePointsTransfer;
 import org.kingdoms.config.KingdomsConfig;
+import top.mckingdom.auspice.commands.general.CommandTransferMember;
 import top.mckingdom.auspice.costs.StandardCostType;
 import top.mckingdom.auspice.managers.BeaconEffectsManager;
 import top.mckingdom.auspice.managers.BoatUseManager;
@@ -48,6 +50,8 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         }
         getServer().getPluginManager().registerEvents(new BoatUseManager(), this);
         getServer().getPluginManager().registerEvents(new EnderPearlTeleportManager(), this);
+
+        new CommandTransferMember();
 
         StandardCostType.init();
 

@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandTransferMember extends KingdomsParentCommand {
-    private CommandTransferMember() {
+    public CommandTransferMember() {
         super("transferMember", true);
     }
 
