@@ -40,7 +40,6 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
             return;
         }
 
-
         KingdomPermissionAutoRegister.init();
         RelationAttributeAutoRegister.init();
         getLogger().info("Addon is enabling...");
