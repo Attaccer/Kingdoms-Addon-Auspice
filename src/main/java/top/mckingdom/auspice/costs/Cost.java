@@ -1,9 +1,16 @@
 package top.mckingdom.auspice.costs;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.namespace.NamespaceContainer;
+import org.kingdoms.libs.snakeyaml.nodes.Tag;
+import org.kingdoms.libs.snakeyaml.validation.NodeValidator;
+import org.kingdoms.libs.snakeyaml.validation.ValidationContext;
+import org.kingdoms.libs.snakeyaml.validation.Validator;
+import org.kingdoms.utils.config.CustomConfigValidators;
 
+import javax.swing.text.html.HTML;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,8 +19,17 @@ import java.util.Objects;
 public abstract class Cost<T, C> implements NamespaceContainer {
 
     protected Namespace namespace;
+    protected NodeValidator validator;
+
     public Cost(Namespace namespace) {
         this.namespace = namespace;
+        this.validator = null;
+    }
+
+    //Input the validator for easy calling when validating the Cost node
+    public Cost(Namespace namespace, NodeValidator validator) {
+        this.namespace = namespace;
+        this.validator = validator;
     }
 
     @Override
@@ -61,16 +77,22 @@ public abstract class Cost<T, C> implements NamespaceContainer {
 
     }
 
-
     public static boolean batchExpend(Objects target, Map<Cost<?, ?>, Objects> costObjects) {
         return true;
     }
 
-    public void compile(String str) {
+    public C compile(ValidationContext context) {
+        this.validator.validate(context);
         throw new UnsupportedOperationException();
     }
 
+    public @Nullable NodeValidator getValidator() {
+        return validator;
+    }
 
+    public void setValidator(NodeValidator validator) {
+        this.validator = validator;
+    }
 
 }
 

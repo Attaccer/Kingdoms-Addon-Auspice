@@ -27,15 +27,23 @@ public class CustomConfigValidators {
                 return context.err("Expected a cost name, instead got " + tag);
             } else {
                 ScalarNode scalarNode = (ScalarNode) context.getNode();
-                Cost cost = CostRegistry.INSTANCE.getRegistered(Namespace.fromString(scalarNode.getValue()));
+                Cost<?, ?> cost = CostRegistry.INSTANCE.getRegistered(Namespace.fromString(scalarNode.getValue()));
                 if (cost == null) {
-                    return context.err("Unknown Cost '" + scalarNode.getValue() + '\'');
+                    return context.err("Unknown Cost type '" + scalarNode.getValue() + '\'');
                 } else {
                     scalarNode.setTag(COST);
                     scalarNode.cacheConstructed(cost);
+
+                    cost.compile(context);
+
                     return null;
                 }
             }
+
+
+
+
+
         }
     }
 

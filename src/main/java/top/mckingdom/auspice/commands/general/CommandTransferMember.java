@@ -41,6 +41,7 @@ public class CommandTransferMember extends KingdomsParentCommand {
         KingdomPlayer kPlayer = KingdomPlayer.getKingdomPlayer(offlinePlayer);
         Kingdom takerKingdom = context.getKingdom(1);
         if (!senderKingdom.hasAttribute(kPlayer.getKingdom(), RelationAttributeAutoRegister.DIRECTLY_TRANSFER_MEMBER)) {
+            context.getPlayer(0).sendMessage("转移成员请求功能未实现");
             //TODO 转移成员申请
         } else {
             directlyTransfer(kPlayer, senderKP, takerKingdom);

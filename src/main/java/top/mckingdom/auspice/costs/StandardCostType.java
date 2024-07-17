@@ -6,7 +6,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.constants.group.Kingdom;
 import org.kingdoms.constants.group.Nation;
 import org.kingdoms.constants.namespace.Namespace;
+import org.kingdoms.libs.snakeyaml.validation.StandardValidator;
 import org.kingdoms.libs.xseries.XMaterial;
+import org.kingdoms.utils.config.CustomConfigValidators;
 import top.mckingdom.auspice.utils.ItemUtil;
 
 import java.util.List;
@@ -16,7 +18,9 @@ public class StandardCostType {
     /**
      * 王国资源点
      */
-    public static final Cost<Kingdom, Long> COST_KINGDOM_RP = new RefundableCost<>(new Namespace("AuspiceAddon", "KINGDOM_RP")) {
+    public static final Cost<Kingdom, Long> COST_KINGDOM_RP = new RefundableCost<>(
+            new Namespace("AuspiceAddon", "KINGDOM_RP")
+    ) {
 
         @Override
         public boolean canExpend(@NonNull Kingdom kingdom, @NonNull Long amount) {
@@ -38,7 +42,10 @@ public class StandardCostType {
     /**
      * 王国的银行
      */
-    public static final Cost<Kingdom, Double> COST_KINGDOM_BANK = new Cost<>(new Namespace("AuspiceAddon", "KINGDOM_BANK")) {
+    public static final Cost<Kingdom, Double> COST_KINGDOM_BANK = new Cost<>(
+            new Namespace("AuspiceAddon", "KINGDOM_BANK"),
+            StandardValidator.NULL
+    ) {
 
         @Override
         public boolean canExpend(@NonNull Kingdom kingdom, @NonNull Double amount) {
