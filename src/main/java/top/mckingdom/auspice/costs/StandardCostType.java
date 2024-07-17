@@ -19,7 +19,8 @@ public class StandardCostType {
      * 王国资源点
      */
     public static final Cost<Kingdom, Long> COST_KINGDOM_RP = new RefundableCost<>(
-            new Namespace("AuspiceAddon", "KINGDOM_RP")
+            new Namespace("AuspiceAddon", "KINGDOM_RP"),
+            CustomConfigValidators.getValidators().get(CustomConfigValidators.MATH.getValue())
     ) {
 
         @Override
@@ -118,7 +119,10 @@ public class StandardCostType {
      * 玩家背包中的多个物品堆
      * 日后可能将进行性能优化
      */
-    public static final Cost<Player, List<ItemStack>> COST_ROUGH_PLAYER_ITEMS = new Cost<>(new Namespace("AuspiceAddon", "ROUGH_PLAYER_ITEMS")) {
+    public static final Cost<Player, List<ItemStack>> COST_ROUGH_PLAYER_ITEMS = new Cost<>(
+            new Namespace("AuspiceAddon", "ROUGH_PLAYER_ITEMS"),
+            CustomConfigValidators.getValidators().get(CustomConfigValidators.ITEM_STACK.getValue())
+    ) {
         @Override
         public boolean canExpend(@NonNull Player player, @NonNull List<ItemStack> items) {
             boolean out = true;
@@ -155,7 +159,9 @@ public class StandardCostType {
     };
 
 
-    public static final Cost<Player, Map<XMaterial, Integer>> COST_PLAYER_MATERIALS = new Cost<>(new Namespace("AuspiceAddon", "PLAYER_MATERIALS")) {
+    public static final Cost<Player, Map<XMaterial, Integer>> COST_PLAYER_MATERIALS = new Cost<>(
+            new Namespace("AuspiceAddon", "PLAYER_MATERIALS")
+    ) {
         @Override
         public boolean canExpend(@NonNull Player player, @NonNull Map<XMaterial, Integer> materials) {
             return false;
