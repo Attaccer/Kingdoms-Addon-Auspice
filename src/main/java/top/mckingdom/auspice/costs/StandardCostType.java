@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.constants.group.Kingdom;
 import org.kingdoms.constants.group.Nation;
 import org.kingdoms.constants.namespace.Namespace;
+import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.libs.snakeyaml.validation.StandardValidator;
 import org.kingdoms.libs.xseries.XMaterial;
 import org.kingdoms.utils.config.CustomConfigValidators;
@@ -15,11 +16,38 @@ import java.util.List;
 import java.util.Map;
 
 public class StandardCostType {
+
+    public static final Cost<KingdomPlayer, Long> COST_KINGDOM_PLAYER_KINGDOM_RP  = new RefundableCost<>(buildNS("KP_KINGDOM_RP")) {
+        @Override
+        public void refund(@NonNull KingdomPlayer kPlayer, @NonNull Long amount) {
+            if (kPlayer.getKingdom() != null) {
+                COST_KINGDOM_RP.refund(kPlayer.getKingdom(), amount);
+            }
+        }
+
+        @Override
+        public boolean canExpend(@NonNull KingdomPlayer kPlayer, @NonNull Long amount) {
+            if (kPlayer.getKingdom() == null) {
+                return false;
+            }
+            return COST_KINGDOM_RP.canExpend(kPlayer.getKingdom(), amount);
+        }
+
+        @Override
+        public void expend(@NonNull KingdomPlayer kPlayer, @NonNull Long amount) {
+            if (kPlayer.getKingdom() != null) {
+                COST_KINGDOM_RP.expend(kPlayer.getKingdom(), amount);
+            }
+        }
+    };
+
+
+
     /**
      * 王国资源点
      */
-    public static final Cost<Kingdom, Long> COST_KINGDOM_RP = new RefundableCost<>(
-            new Namespace("AuspiceAddon", "KINGDOM_RP"),
+    public static final RefundableCost<Kingdom, Long> COST_KINGDOM_RP = new RefundableCost<>(
+            buildNS("KINGDOM_RP"),
             CustomConfigValidators.getValidators().get(CustomConfigValidators.MATH.getValue())
     ) {
 
@@ -37,8 +65,26 @@ public class StandardCostType {
         public void refund(@NonNull Kingdom kingdom, @NonNull Long amount) {
             kingdom.addResourcePoints(amount);
         }
+
+
     };
 
+    /**
+     * 王国的银行
+     */
+    public static final Cost<Kingdom, Double> COST_KINGDOM_PLAYER_KINGDOM_BANK = new Cost<>(buildNS("KINGDOM_BANK")) {
+
+        @Override
+        public boolean canExpend(@NonNull Kingdom kingdom, @NonNull Double amount) {
+            return kingdom.getBank() >= amount;
+        }
+
+        @Override
+        public void expend(@NonNull Kingdom kingdom, @NonNull Double amount) {
+            kingdom.setBank(kingdom.getBank() - amount);
+        }
+
+    };
 
     /**
      * 王国的银行
@@ -75,6 +121,10 @@ public class StandardCostType {
             kingdom.setMaxLandsModifier(kingdom.getMaxLandsModifier() - amount);
 
         }
+        @Override
+        public String toString() {
+            return "COST_KINGDOM_MAX_LANDS_MODIFIER";
+        }
 
     };
 
@@ -95,6 +145,10 @@ public class StandardCostType {
             nation.setResourcePoints(-amount);
         }
 
+        @Override
+        public String toString() {
+            return "COST_NATION_RP";
+        }
     };
 
 
@@ -111,6 +165,10 @@ public class StandardCostType {
         @Override
         public void expend(@NonNull Nation nation, @NonNull Double amount) {
             nation.setBank(nation.getBank() - amount);
+        }
+        @Override
+        public String toString() {
+            return "COST_NATION_BANK";
         }
 
     };
@@ -140,6 +198,11 @@ public class StandardCostType {
                 COST_ROUGH_PLAYER_ITEM.expend(player, itemStack);
             }
         }
+
+        @Override
+        public String toString() {
+            return "COST_ROUGH_PLAYER_ITEMS";
+        }
     };      
 
 
@@ -156,6 +219,11 @@ public class StandardCostType {
         public void expend(@NonNull Player player, @NonNull ItemStack item) {
             ItemUtil.removeItem(player.getInventory(), item.getType(), item.getAmount());
         }
+        @Override
+        public String toString() {
+            return "COST_ROUGH_PLAYER_ITEM";
+        }
+
     };
 
 
@@ -172,7 +240,17 @@ public class StandardCostType {
         public void expend(@NonNull Player player, @NonNull Map<XMaterial, Integer> materials) {
             //TODO
         }
+
+        @Override
+        public String toString() {
+            return "COST_PLAYER_MATERIALS";
+        }
     };
+
+
+    static Namespace buildNS(String s) {
+        return new Namespace("AuspiceAddon", s);
+    }
     
     
     public static void init() {

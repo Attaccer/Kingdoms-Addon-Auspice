@@ -4,7 +4,6 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.kingdoms.constants.group.Kingdom;
@@ -13,8 +12,7 @@ import org.kingdoms.constants.land.Land;
 import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.libs.xseries.particles.ParticleDisplay;
 import org.kingdoms.locale.KingdomsLang;
-import org.kingdoms.managers.land.protection.MiscUpgradeManager;
-import top.mckingdom.auspice.permissions.RelationAttributeAutoRegister;
+import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 
 public class EnderPearlTeleportManager implements Listener {
 //    private final MiscUpgradeManager a = new MiscUpgradeManager();
@@ -33,7 +31,7 @@ public class EnderPearlTeleportManager implements Listener {
                 Kingdom kingdom;
                 if ((kingdom = land.getKingdom()).getUpgradeLevel(MiscUpgrade.ANTI_TRAMPLE) >= 3) {
                     Kingdom var5 = kPlayer.getKingdom();
-                    if (!RelationAttributeAutoRegister.ENDER_PEARL_TELEPORT.hasAttribute(kingdom, var5)) {
+                    if (!RelationAttributeRegister.ENDER_PEARL_TELEPORT.hasAttribute(kingdom, var5)) {
                         event.setCancelled(true);
                         ParticleDisplay.of(Particle.CLOUD).withCount(10).spawn(event.getTo());
                         KingdomsLang.LANDS_ENDER_PEARL_PROTECTION.sendError(player);

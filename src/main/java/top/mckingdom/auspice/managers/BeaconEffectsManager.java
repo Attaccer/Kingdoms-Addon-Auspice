@@ -1,7 +1,7 @@
 package top.mckingdom.auspice.managers;
 
 
-import top.mckingdom.auspice.permissions.RelationAttributeAutoRegister;
+import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -23,7 +23,7 @@ public class BeaconEffectsManager implements Listener {
                 KingdomPlayer player = KingdomPlayer.getKingdomPlayer((Player)event.getEntity());
                 Land land = Land.getLand(event.getEntity().getLocation());
                 if (land != null && land.isClaimed()) {
-                    event.setCancelled(!land.getKingdom().hasAttribute(player.getKingdom(), RelationAttributeAutoRegister.BEACON_EFFECTS));
+                    event.setCancelled(!land.getKingdom().hasAttribute(player.getKingdom(), RelationAttributeRegister.BEACON_EFFECTS));
                 }
             }
         }

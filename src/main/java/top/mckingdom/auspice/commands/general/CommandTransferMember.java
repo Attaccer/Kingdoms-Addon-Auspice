@@ -9,9 +9,9 @@ import org.kingdoms.constants.group.Kingdom;
 import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.events.members.LeaveReason;
 import org.kingdoms.locale.KingdomsLang;
-import top.mckingdom.auspice.configs.AuspiceAddonLang;
-import top.mckingdom.auspice.permissions.KingdomPermissionAutoRegister;
-import top.mckingdom.auspice.permissions.RelationAttributeAutoRegister;
+import top.mckingdom.auspice.configs.AuspiceLang;
+import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
+import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,13 +34,13 @@ public class CommandTransferMember extends KingdomsParentCommand {
             return CommandResult.FAILED;
         }
         OfflinePlayer offlinePlayer = context.getOfflinePlayer(0);
-        if (!senderKP.hasPermission(KingdomPermissionAutoRegister.PERMISSION_TRANSFER_MEMBERS)) {
-            AuspiceAddonLang.PERMISSION_TRANSFER_MEMBERS.sendError(offlinePlayer.getPlayer());
+        if (!senderKP.hasPermission(KingdomPermissionRegister.PERMISSION_TRANSFER_MEMBERS)) {
+            AuspiceLang.PERMISSION_TRANSFER_MEMBERS.sendError(offlinePlayer.getPlayer());
             return CommandResult.FAILED;
         }
         KingdomPlayer kPlayer = KingdomPlayer.getKingdomPlayer(offlinePlayer);
         Kingdom takerKingdom = context.getKingdom(1);
-        if (!senderKingdom.hasAttribute(kPlayer.getKingdom(), RelationAttributeAutoRegister.DIRECTLY_TRANSFER_MEMBER)) {
+        if (!senderKingdom.hasAttribute(kPlayer.getKingdom(), RelationAttributeRegister.DIRECTLY_TRANSFER_MEMBER)) {
             context.getPlayer(0).sendMessage("转移成员请求功能未实现");
             //TODO 转移成员申请
         } else {

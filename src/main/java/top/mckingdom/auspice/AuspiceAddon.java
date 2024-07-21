@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.addons.Addon;
-import org.kingdoms.commands.general.resourcepoints.transfer.CommandResourcePointsTransfer;
 import org.kingdoms.config.KingdomsConfig;
 import org.kingdoms.constants.metadata.KingdomMetadataHandler;
 import org.kingdoms.constants.metadata.KingdomMetadataRegistry;
@@ -12,11 +11,11 @@ import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.commands.general.CommandTransferMember;
 import top.mckingdom.auspice.configs.CustomConfigValidators;
 import top.mckingdom.auspice.costs.StandardCostType;
+import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
+import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 import top.mckingdom.auspice.managers.BeaconEffectsManager;
 import top.mckingdom.auspice.managers.BoatUseManager;
 import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
-import top.mckingdom.auspice.permissions.KingdomPermissionAutoRegister;
-import top.mckingdom.auspice.permissions.RelationAttributeAutoRegister;
 
 import java.io.File;
 import java.util.HashSet;
@@ -27,6 +26,8 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     private static AuspiceAddon instance;
 
     private final Set<KingdomMetadataHandler> metadataHandlers = new HashSet<>();
+
+    private static boolean enabled = false;
 
     public AuspiceAddon() {
         instance = this;
@@ -51,8 +52,8 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
             return;
         }
 
-        KingdomPermissionAutoRegister.init();
-        RelationAttributeAutoRegister.init();
+        KingdomPermissionRegister.init();
+        RelationAttributeRegister.init();
         getLogger().info("Addon is enabling...");
 
         if (KingdomsConfig.Claims.BEACON_PROTECTED_EFFECTS.getManager().getBoolean()) {
@@ -67,12 +68,12 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
         registerAddon();
 
+        enabled = true;
     }
 
     @Override
     public void onDisable() {
         getLogger().info("Addon is disabling...");
-        super.onDisable();
         signalDisable();
         // Plugin shutdown logic
     }
@@ -103,7 +104,9 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         return instance;
     }
 
-
+    public static boolean isAuspiceEnabled() {
+        return enabled;
+    }
 
 
 

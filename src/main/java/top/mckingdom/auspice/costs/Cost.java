@@ -4,15 +4,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.namespace.NamespaceContainer;
-import org.kingdoms.libs.snakeyaml.nodes.Tag;
 import org.kingdoms.libs.snakeyaml.validation.NodeValidator;
 import org.kingdoms.libs.snakeyaml.validation.ValidationContext;
-import org.kingdoms.libs.snakeyaml.validation.Validator;
-import org.kingdoms.utils.config.CustomConfigValidators;
 
-import javax.swing.text.html.HTML;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -32,10 +26,7 @@ public abstract class Cost<T, C> implements NamespaceContainer {
         this.validator = validator;
     }
 
-    @Override
-    public Namespace getNamespace() {
-        return this.namespace;
-    }
+
 
     abstract public boolean canExpend(@NonNull T target, @NonNull C amount);
 
@@ -46,40 +37,21 @@ public abstract class Cost<T, C> implements NamespaceContainer {
      * @param amount 消费的数量.
      */
     abstract public void expend(@NonNull T target, @NonNull C amount);
-
-
-
-    /**
-     * @deprecated 有问题的代码,容易报一大堆错误,别用
-     * @param target 消费的对象
-     * @param amount
-     * @param costProjects
-     * @return
-     */
-    @Deprecated()
-    public static boolean batchExpend(Objects target, Objects amount, Cost<?, ?>... costProjects) {
-        boolean b = true;
-
-        for (Iterator<Cost<?, ?>> it = Arrays.stream(costProjects).iterator(); it.hasNext(); ) {
-            @SuppressWarnings("rawtypes") Cost c = it.next();
-            //noinspection unchecked
-            b = c.canExpend(target, amount) && b;
-        }
-        if (b) {
-            for (Iterator<Cost<?, ?>> it = Arrays.stream(costProjects).iterator(); it.hasNext(); ) {
-                @SuppressWarnings("rawtypes") Cost c = it.next();
-                //noinspection unchecked
-                c.expend(target, amount);
-            }
-        }
-
-        return b;  //返回是否批量消费成功
-
+    public void expend(@NonNull T target, @NonNull Objects amount) {
+        this.expend(target, (C)amount);
     }
 
-    public static boolean batchExpend(Objects target, Map<Cost<?, ?>, Objects> costObjects) {
+
+    public static <T> boolean canExpend(T target, Map<Cost<T, ?>, Objects> costObjects) {
         return true;
     }
+
+    public static <T> void expend(T target, Map<Cost<T, ?>, Objects> costObjects) {
+        for (Cost<T, ?> cost : costObjects.keySet()) {
+            cost.expend(target, costObjects.get(cost));
+        }
+    }
+
 
     public C compile(ValidationContext context) {
         this.validator.validate(context);
@@ -94,6 +66,16 @@ public abstract class Cost<T, C> implements NamespaceContainer {
         this.validator = validator;
     }
 
+
+    @Override
+    public Namespace getNamespace() {
+        return this.namespace;
+    }
+
+    @Override
+    public String toString() {
+        return "Cost[" + this.namespace.asString() + ']';
+    }
 }
 
 
