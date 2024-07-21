@@ -7,6 +7,7 @@ import org.kingdoms.addons.Addon;
 import org.kingdoms.config.KingdomsConfig;
 import org.kingdoms.constants.metadata.KingdomMetadataHandler;
 import org.kingdoms.constants.metadata.KingdomMetadataRegistry;
+import org.kingdoms.locale.KingdomsLang;
 import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.commands.general.CommandTransferMember;
