@@ -7,6 +7,7 @@ import org.kingdoms.addons.Addon;
 import org.kingdoms.config.KingdomsConfig;
 import org.kingdoms.constants.metadata.KingdomMetadataHandler;
 import org.kingdoms.constants.metadata.KingdomMetadataRegistry;
+import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.commands.general.CommandTransferMember;
 import top.mckingdom.auspice.configs.CustomConfigValidators;
@@ -16,6 +17,7 @@ import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 import top.mckingdom.auspice.managers.BeaconEffectsManager;
 import top.mckingdom.auspice.managers.BoatUseManager;
 import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
+import top.mckingdom.auspice.utils.MessengerUtil;
 
 import java.io.File;
 import java.util.HashSet;
@@ -65,6 +67,8 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         new CommandTransferMember();
 
         StandardCostType.init();
+
+        MessengerUtil.lock();
 
         registerAddon();
 

@@ -1,5 +1,6 @@
 package top.mckingdom.auspice.utils;
 
+import org.kingdoms.constants.namespace.Lockable;
 import org.kingdoms.locale.LanguageEntry;
 import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.locale.messenger.DefinedMessenger;
@@ -8,17 +9,29 @@ import java.util.ArrayList;
 
 public class MessengerUtil {
 
+    private static boolean locked = false;
+
     /**
      * @param path The Path of Language, such as "new String[]{"permissions", "jail"}" will make a path "permissions/jail"
      */
     public static DefinedMessenger createMessenger(String[] path, String defaultValue) {
         DynamicLanguage dynamicLanguage = new DynamicLanguage(path, defaultValue);
         constants.add(dynamicLanguage);
-        LanguageManager.registerMessenger(DynamicLanguage.class, constants.toArray(new DynamicLanguage[0]));
+        LanguageManager.registerMessenger(DynamicLanguage.class, constants.toArray(new DynamicLanguage[constants.size()]));
         return dynamicLanguage;
     }
 
     private static final ArrayList<DynamicLanguage> constants = new ArrayList<>();
+
+
+    public static void lock() {
+        if (locked) {
+            throw new IllegalAccessError("Registers are already closed");
+        } else {
+            locked = true;
+        }
+    }
+
     static class DynamicLanguage implements DefinedMessenger {
 
         private final LanguageEntry languageEntry;
