@@ -8,13 +8,17 @@ import org.kingdoms.locale.messenger.DefinedMessenger;
 
 public class XKingdomPermission extends KingdomPermission {
     private final DefinedMessenger messenger;
-    public XKingdomPermission(Namespace namespace, DefinedMessenger messenger) {
+    private final String defaultMessage;
+    private final String defaultLore;
+    public XKingdomPermission(Namespace namespace, DefinedMessenger messenger, String defaultMessage, String defaultLore) {
         super(namespace);
         this.messenger = messenger;
+        this.defaultMessage = defaultMessage;
+        this.defaultLore = defaultLore;
     }
 
-    static XKingdomPermission reg(Namespace namespace, DefinedMessenger messenger, int hash) {
-        XKingdomPermission perm = new XKingdomPermission(namespace, messenger);
+    static XKingdomPermission reg(Namespace namespace, DefinedMessenger messenger, String defaultMessage, String defaultLore, int hash) {
+        XKingdomPermission perm = new XKingdomPermission(namespace, messenger, defaultMessage, defaultLore);
         perm.setHash(hash);
         return perm;
     }
@@ -30,5 +34,9 @@ public class XKingdomPermission extends KingdomPermission {
 
     public DefinedMessenger getMessenger() {
         return messenger;
+    }
+
+    public String getDefaultMessage() {
+        return this.defaultMessage;
     }
 }

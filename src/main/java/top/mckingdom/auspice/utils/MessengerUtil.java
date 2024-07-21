@@ -9,29 +9,28 @@ import java.util.ArrayList;
 public class MessengerUtil {
 
     /**
-     *
      * @param path The Path of Language, such as "new String[]{"permissions", "jail"}" will make a path "permissions/jail"
      */
     public static DefinedMessenger createMessenger(String[] path, String defaultValue) {
-        M m = new M(path, defaultValue);
-        constants.add(m);
-        LanguageManager.registerMessenger(M.class, constants.toArray(new M[0]));
-        return m;
+        DynamicLanguage dynamicLanguage = new DynamicLanguage(path, defaultValue);
+        constants.add(dynamicLanguage);
+        LanguageManager.registerMessenger(DynamicLanguage.class, constants.toArray(new DynamicLanguage[0]));
+        return dynamicLanguage;
     }
 
-    protected static ArrayList<M> constants = new ArrayList<>();
-    static class M implements DefinedMessenger {
+    private static final ArrayList<DynamicLanguage> constants = new ArrayList<>();
+    static class DynamicLanguage implements DefinedMessenger {
 
         private final LanguageEntry languageEntry;
         private final String defaultValue;
 
-        M(String[] path, String defaultValue) {
+        DynamicLanguage(String[] path, String defaultValue) {
             this.languageEntry = new LanguageEntry(path);
             this.defaultValue = defaultValue;
             constants.add(this);
         }
 
-        public ArrayList<M> getConstants() {
+        public ArrayList<DynamicLanguage> getConstants() {
             return constants;
         }
 

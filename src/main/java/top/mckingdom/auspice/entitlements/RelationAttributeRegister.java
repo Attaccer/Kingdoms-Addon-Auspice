@@ -36,14 +36,18 @@ public class RelationAttributeRegister extends RelationAttribute {
     public static RelationAttribute register(String namespace, String keyword) {
         Namespace ns = new Namespace(namespace, keyword);
         RelationAttributeRegister attr = new RelationAttributeRegister(ns);
-        Companion.attributeMap.put(ns, attr);
-        attr.setHash(Companion.attributeMap.size() + 514);
+        Companion.attributes.put(ns, attr);
+        attr.setHash(Companion.attributes.size() + 514);
         Kingdoms.get().getRelationAttributeRegistry().register(attr);
         return attr;
     }
 
+    public static XRelationAttribute register(Namespace namespace, String defaultLore) {
+        return XRelationAttribute.reg(namespace, defaultLore, Companion.attributes.size() + 31);
+    }
+
     private static class Companion {
-        public static final Map<Namespace, RelationAttribute> attributeMap = new HashMap<>();
+        public static final Map<Namespace, RelationAttribute> attributes = new HashMap<>();
     }
 
 }

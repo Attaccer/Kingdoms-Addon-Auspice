@@ -12,9 +12,10 @@ public class BoatUseManager implements Listener {
     @EventHandler
     public void onInteractBoat(PlayerInteractEntityEvent event) {
         if (event.getRightClicked() instanceof Boat) {
-            KingdomPlayer player = KingdomPlayer.getKingdomPlayer(event.getPlayer().getUniqueId());
+            KingdomPlayer player = KingdomPlayer.getKingdomPlayer(event.getPlayer());
             if (!player.hasPermission(KingdomPermissionRegister.PERMISSION_USE_BOATS)) {
                 event.setCancelled(true);
+                KingdomPermissionRegister.PERMISSION_USE_BOATS.sendDeniedMessage(event.getPlayer());
             }
         }
     }
