@@ -5,6 +5,7 @@ import org.kingdoms.config.KingdomsConfig;
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.player.KingdomPermission;
 import org.kingdoms.locale.messenger.DefinedMessenger;
+import org.kingdoms.main.Kingdoms;
 
 public class XKingdomPermission extends KingdomPermission {
     private final DefinedMessenger messenger;
@@ -20,6 +21,7 @@ public class XKingdomPermission extends KingdomPermission {
     static XKingdomPermission reg(Namespace namespace, DefinedMessenger messenger, String defaultMessage, String defaultLore, int hash) {
         XKingdomPermission perm = new XKingdomPermission(namespace, messenger, defaultMessage, defaultLore);
         perm.setHash(hash);
+        Kingdoms.get().getPermissionRegistery().register(perm);
         return perm;
     }
 

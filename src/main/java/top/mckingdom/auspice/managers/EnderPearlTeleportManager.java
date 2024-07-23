@@ -4,6 +4,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.kingdoms.constants.group.Kingdom;
@@ -12,18 +13,16 @@ import org.kingdoms.constants.land.Land;
 import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.libs.xseries.particles.ParticleDisplay;
 import org.kingdoms.locale.KingdomsLang;
+import org.kingdoms.managers.land.protection.MiscUpgradeManager;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 
 public class EnderPearlTeleportManager implements Listener {
-//    private final MiscUpgradeManager a = new MiscUpgradeManager();
 
-    @EventHandler(
-            priority = EventPriority.HIGHEST
-    )
+    @EventHandler(ignoreCancelled = true)
     public final void onPearlTeleport(PlayerTeleportEvent event) {
+
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
-//            HandlerList handlerList = event.getHandlers();
-//            handlerList.unregister(a);
+
             Player player;
             KingdomPlayer kPlayer = KingdomPlayer.getKingdomPlayer(player = event.getPlayer());
             Land land;
@@ -35,6 +34,7 @@ public class EnderPearlTeleportManager implements Listener {
                         event.setCancelled(true);
                         ParticleDisplay.of(Particle.CLOUD).withCount(10).spawn(event.getTo());
                         KingdomsLang.LANDS_ENDER_PEARL_PROTECTION.sendError(player);
+
                     } else {
                         event.setCancelled(false);
                     }

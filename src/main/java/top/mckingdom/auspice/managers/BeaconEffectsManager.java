@@ -12,18 +12,17 @@ import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.managers.land.LandEffectsManager;
 
 public class BeaconEffectsManager implements Listener {
-    LandEffectsManager.BeaconManager a = new LandEffectsManager.BeaconManager();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void whenPlayerInBeacon(EntityPotionEffectEvent event) {
         if (event.getCause() == EntityPotionEffectEvent.Cause.BEACON) {
-            HandlerList handlerList = event.getHandlers();
-            handlerList.unregister(a);
             if (event.getEntity() instanceof Player) {
                 KingdomPlayer player = KingdomPlayer.getKingdomPlayer((Player)event.getEntity());
                 Land land = Land.getLand(event.getEntity().getLocation());
                 if (land != null && land.isClaimed()) {
-                    event.setCancelled(!land.getKingdom().hasAttribute(player.getKingdom(), RelationAttributeRegister.BEACON_EFFECTS));
+                    if (!land.getKingdom().hasAttribute(player.getKingdom(), RelationAttributeRegister.BEACON_EFFECTS)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }

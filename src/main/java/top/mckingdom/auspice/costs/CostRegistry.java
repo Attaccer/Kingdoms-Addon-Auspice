@@ -1,11 +1,8 @@
 package top.mckingdom.auspice.costs;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.kingdoms.constants.namespace.Namespace;
-import org.kingdoms.constants.namespace.NamespaceContainer;
-import org.kingdoms.constants.namespace.NamespaceRegistry;
+import org.kingdoms.constants.namespace.NamespacedRegistry;
 
-public class CostRegistry extends NamespaceRegistry<Cost> {
+public class CostRegistry extends NamespacedRegistry<Cost> {
 
     private CostRegistry() {
 

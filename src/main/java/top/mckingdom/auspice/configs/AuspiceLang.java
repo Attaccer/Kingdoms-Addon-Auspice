@@ -4,9 +4,13 @@ import org.kingdoms.locale.LanguageEntry;
 import org.kingdoms.locale.messenger.DefinedMessenger;
 
 public enum AuspiceLang implements DefinedMessenger {
-    PERMISSION_TRANSFER_MEMBERS("You don't have permission to transfer members."),
+    COMMAND_TRANSFER_MEMBER_DESCRIPTION("{$s}Transfer members of your kingdom to another kingdom.", 1, 3),
+    COMMAND_TRANSFER_MEMBER_USAGE("{$usage}transferMember <YourKingdomMember> <Kingdom>", 1, 3),
+    COMMAND_TRANSFER_MEMBER_OTHER_KINGDOM("{$e}You cannot transfer members of other kingdom!", 1, 3),
+    COMMAND_TRANSFER_MEMBER_REQUEST_SUCCESS("{$s}Successfully sent a request to transfer members to the other kingdom.", 1, 3, 4),
+    COMMAND_TRANSFER_MEMBER_DIRECT_SUCCESS("{$s}Successfully transferred member %player% to the other kingdom %kingdom%.", 1, 3, 4),
 
-
+    COMMAND_LAND_CATEGORY_SET_SUCCESS("{$s}Successfully set the land category to %category%", 1, 3, 4)
 
     ;
 
@@ -15,7 +19,7 @@ public enum AuspiceLang implements DefinedMessenger {
 
     AuspiceLang(String defaultValue, int... grouped) {
         this.defaultValue = defaultValue;
-        this.languageEntry = DefinedMessenger.getEntry("auspice-addon", this, grouped);
+        this.languageEntry = DefinedMessenger.getEntry(null, this, grouped);
     }
 
     @Override

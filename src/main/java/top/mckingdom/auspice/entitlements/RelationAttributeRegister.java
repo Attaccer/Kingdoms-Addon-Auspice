@@ -9,22 +9,19 @@ import org.kingdoms.main.Kingdoms;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RelationAttributeRegister extends RelationAttribute {
+public class RelationAttributeRegister {
 
     public static final RelationAttribute BEACON_EFFECTS = register("AuspiceAddon", "BEACON_EFFECTS");
     public static final RelationAttribute ENDER_PEARL_TELEPORT = register("AuspiceAddon", "ENDER_PEARL_TELEPORT");
-    public static final RelationAttribute DIRECTLY_TRANSFER_MEMBER = register("AuspiceAddon", "DIRECTLY_TRANSFER_MEMBER");
+    public static final RelationAttribute DIRECTLY_TRANSFER_MEMBERS = register("AuspiceAddon", "DIRECTLY_TRANSFER_MEMBERS");
 
-    public RelationAttributeRegister(Namespace namespace) {
-        super(namespace);
-    }
 
     public static void init() {
     }
 
-    @Override
-    public boolean hasAttribute(Group group, Group anotherGroup) {
-        return StandardRelationAttribute.hasAttribute(this, group, anotherGroup);
+
+    public static XRelationAttribute register(String namespace, String keyword) {
+        return register(namespace, keyword, "This is a relation attribute: " + keyword);
     }
 
     /**
@@ -33,13 +30,9 @@ public class RelationAttributeRegister extends RelationAttribute {
      * @param keyword 你要注册的外交属性的关键字,只能全部大写英文字母和下划线,比如"ENDER_PEARL_TELEPORT"
      * @return 你所注册的外交属性
      */
-    public static RelationAttribute register(String namespace, String keyword) {
+    public static XRelationAttribute register(String namespace, String keyword, String defaultLore) {
         Namespace ns = new Namespace(namespace, keyword);
-        RelationAttributeRegister attr = new RelationAttributeRegister(ns);
-        Companion.attributes.put(ns, attr);
-        attr.setHash(Companion.attributes.size() + 514);
-        Kingdoms.get().getRelationAttributeRegistry().register(attr);
-        return attr;
+        return register(ns, defaultLore);
     }
 
     public static XRelationAttribute register(Namespace namespace, String defaultLore) {

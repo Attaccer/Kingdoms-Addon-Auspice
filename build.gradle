@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'top'
-version = '1.0-SNAPSHOT'
+version = '2.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -20,13 +20,16 @@ repositories {
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
-    compileOnly(files("libs/KingdomsX-1.16.20.5.jar"))
-    compileOnly(files("libs/xseries-9.9.0-remapped.jar"))
-//    compileOnly "com.github.cryptomorin:kingdoms:1.16.20.5"
-//    compileOnly(files("libs/KingdomsX-1.17.0-ALPHA.jar"))
+    compileOnly(files("libs/KingdomsX-1.17.0-ALPHA.jar"))
+    compileOnly(files("libs/kotlin-stdlib-2.0.20-Beta2-remapped.jar"))
+    compileOnly(files("libs/xseries-11.2.0.1-remapped.jar"))
+    compileOnly(files("libs/hikari-5.1.0-remapped.jar"))
+    compileOnly(files("libs/guava-33.2.1-jre-remapped.jar"))
+    compileOnly(files("libs/gson-2.11.0-remapped.jar"))
+    compileOnly(files("libs/caffeine-3.1.8-remapped.jar"))
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

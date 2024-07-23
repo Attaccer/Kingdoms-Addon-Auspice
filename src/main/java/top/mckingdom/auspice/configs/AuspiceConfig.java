@@ -2,12 +2,13 @@ package top.mckingdom.auspice.configs;
 
 import org.kingdoms.config.EnumConfig;
 import org.kingdoms.config.KeyedConfigAccessor;
+import org.kingdoms.config.implementation.KeyedYamlConfigAccessor;
 import org.kingdoms.config.managers.ConfigManager;
 import org.kingdoms.config.managers.ConfigWatcher;
 import org.kingdoms.main.Kingdoms;
 import org.kingdoms.utils.config.ConfigPath;
 import org.kingdoms.utils.config.adapters.YamlResource;
-import org.kingdoms.utils.string.StringUtils;
+import org.kingdoms.utils.string.Strings;
 import top.mckingdom.auspice.AuspiceAddon;
 
 public enum AuspiceConfig implements EnumConfig {
@@ -20,7 +21,7 @@ public enum AuspiceConfig implements EnumConfig {
     ;
 
     public static final YamlResource AUSPICE_MAIN =
-            new YamlResource(AuspiceAddon.getInstance(),
+            new YamlResource(AuspiceAddon.get(),
                     Kingdoms.getPath("auspice-addon.yml").toFile(),
                     "auspice-addon.yml").load();
 
@@ -33,7 +34,7 @@ public enum AuspiceConfig implements EnumConfig {
     private final ConfigPath option;
 
     AuspiceConfig() {
-        this.option = new ConfigPath(StringUtils.configOption(this));
+        this.option = new ConfigPath(Strings.configOption(this));
     }
     AuspiceConfig(int... grouped) {
         this.option = new ConfigPath(this.name(), grouped);
@@ -41,6 +42,11 @@ public enum AuspiceConfig implements EnumConfig {
 
     @Override
     public KeyedConfigAccessor getManager() {
-        return null;
+        return new KeyedYamlConfigAccessor(AUSPICE_MAIN, option);
     }
+
+    public static YamlResource getConfig() {
+        return AUSPICE_MAIN;
+    }
+
 }

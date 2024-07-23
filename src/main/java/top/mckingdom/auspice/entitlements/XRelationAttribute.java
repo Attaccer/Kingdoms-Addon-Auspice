@@ -5,6 +5,7 @@ import org.kingdoms.constants.group.Kingdom;
 import org.kingdoms.constants.group.model.relationships.RelationAttribute;
 import org.kingdoms.constants.group.model.relationships.StandardRelationAttribute;
 import org.kingdoms.constants.namespace.Namespace;
+import org.kingdoms.main.Kingdoms;
 
 public class XRelationAttribute extends RelationAttribute {
 
@@ -16,6 +17,7 @@ public class XRelationAttribute extends RelationAttribute {
     static XRelationAttribute reg(Namespace namespace, String defaultLore, int hash) {
         XRelationAttribute attr = new XRelationAttribute(namespace, defaultLore);
         attr.setHash(hash);
+        Kingdoms.get().getRelationAttributeRegistry().register(attr);
         return attr;
     }
     @Override

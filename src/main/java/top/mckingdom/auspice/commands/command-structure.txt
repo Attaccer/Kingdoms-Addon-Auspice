@@ -1,0 +1,15 @@
+k:
+    admin:
+        landCategory:
+            set
+            get
+            stat
+
+
+
+
+
+    landCategory: gui
+        gui
+        change
+        check

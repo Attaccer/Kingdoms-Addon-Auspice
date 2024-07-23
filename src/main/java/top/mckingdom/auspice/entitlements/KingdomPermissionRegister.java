@@ -24,10 +24,10 @@ public final class KingdomPermissionRegister {
         return register(namespace, keyword, "{$e}You don't have permission " + keyword.toLowerCase() + "to do this.", "A kingdom permission: " + keyword);
     }
 
-//    public static XKingdomPermission register(String namespace, String keyword, String defaultMessage) {
-//        return register(namespace, keyword, defaultMessage, "A kingdom permission: " + keyword);
-//    }
-//
+    public static XKingdomPermission register(String namespace, String keyword, String defaultMessage) {
+        return register(namespace, keyword, defaultMessage, "A kingdom permission: " + keyword);
+    }
+
 //    public static XKingdomPermission register(String namespace, String keyword, String defaultLore) {
 //        return register(namespace, keyword, "{$e}You don't have permission " + keyword.toLowerCase() + "to do this.", defaultLore);
 //    }
@@ -39,9 +39,7 @@ public final class KingdomPermissionRegister {
     }
 
     public static XKingdomPermission register(Namespace namespace, DefinedMessenger messenger, String defaultMessage, String defaultLore) {
-        XKingdomPermission perm = XKingdomPermission.reg(namespace, messenger, defaultMessage, defaultLore, Companion.permissions.size() + 90);
-        Kingdoms.get().getPermissionRegistery().register(perm);
-        return perm;
+        return XKingdomPermission.reg(namespace, messenger, defaultMessage, defaultLore, Companion.permissions.size() + 90);
     }
 
     public static void init() {

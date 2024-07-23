@@ -3,14 +3,14 @@ package top.mckingdom.auspice.costs;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kingdoms.constants.namespace.Namespace;
-import org.kingdoms.constants.namespace.NamespaceContainer;
+import org.kingdoms.constants.namespace.Namespaced;
 import org.kingdoms.libs.snakeyaml.validation.NodeValidator;
 import org.kingdoms.libs.snakeyaml.validation.ValidationContext;
 
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class Cost<T, C> implements NamespaceContainer {
+public abstract class Cost<T, C> implements Namespaced {
 
     protected Namespace namespace;
     protected NodeValidator validator;
