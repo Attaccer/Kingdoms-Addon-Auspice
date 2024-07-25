@@ -17,6 +17,7 @@ import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.configs.CustomConfigValidators;
 import top.mckingdom.auspice.costs.StandardCostType;
+import top.mckingdom.auspice.data.land.LandCategoryPlaceholder;
 import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 import top.mckingdom.auspice.land_categories.LandCategoryRegistry;
@@ -88,6 +89,8 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
             new CommandTransferMember();
         }
+
+        LandCategoryPlaceholder.init();
 
 
         MessengerUtil.lock();

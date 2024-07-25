@@ -14,7 +14,7 @@ import org.kingdoms.constants.namespace.Namespace
 import org.kingdoms.data.database.dataprovider.SectionCreatableDataSetter
 import org.kingdoms.data.database.dataprovider.SectionableDataGetter
 import org.kingdoms.libs.kotlin.jvm.functions.Function1
-import org.kingdoms.libs.kotlin.jvm.internal.Intrinsics
+import org.kingdoms.locale.compiler.container.MessageContainer
 import org.kingdoms.locale.placeholders.*
 import top.mckingdom.auspice.AuspiceAddon
 import top.mckingdom.auspice.data.land.LandCategoryData.Companion.getCategory
@@ -23,34 +23,35 @@ import top.mckingdom.auspice.land_categories.LandCategoryRegistry
 import top.mckingdom.auspice.land_categories.StandardLandCategory
 import java.util.*
 
+@Suppress("unused")
 class LandCategoryData {
     companion object {
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun Chunk.setCategory(landCategory: LandCategory) {
             Land.getLand(this)?.setCategory(landCategory)
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun SimpleChunkLocation.setCategory(landCategory: LandCategory) {
             this.land?.setCategory(landCategory)
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun Land.setCategory(landCategory: LandCategory) {
             this.metadata[LandCategoryMetaHandler.INSTANCE]!!.value = landCategory
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun Location.getCategory(): LandCategory? {
             return (SimpleChunkLocation.of(this)).getCategory()
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun Chunk.getCategory(): LandCategory? {
             return SimpleChunkLocation.of(this).land?.getCategory()
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun SimpleChunkLocation.getCategory(): LandCategory? {
             return this.land?.getCategory()
         }
@@ -60,7 +61,7 @@ class LandCategoryData {
          * 如果Land未被占领且未分配Category，返回null
          * 如果Land已被占领，返回非null
          */
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun Land.getCategory(): LandCategory? {
             var meta: KingdomMetadata? = this.metadata[LandCategoryMetaHandler.INSTANCE]
             if (!this.isClaimed && meta === null) {
@@ -74,7 +75,7 @@ class LandCategoryData {
 
         }
 
-        @kotlin.jvm.JvmStatic
+        @JvmStatic
         fun Land.clearCategory() {
             this.metadata.remove(LandCategoryMetaHandler.INSTANCE)
 
@@ -120,32 +121,30 @@ class LandCategoryMetaHandler private constructor() : KingdomMetadataHandler(Nam
         val INSTANCE: LandCategoryMetaHandler = LandCategoryMetaHandler()
     }
 }
-
+@Suppress("unused")
 enum class LandCategoryPlaceholder(private val default : Any, private val translator : Function1<KingdomsPlaceholderTranslationContext, Any>) : KingdomsPlaceholderTranslator {
 
 
     LAND_LAND_CATEGORY(StandardLandCategory.NULL, { context -> context.land.getCategory() }),
 
     KINGDOM_LAND_AMOUNT_CATEGORY_NULL(0, { context ->
-        var amount : Int = 0;
-        context.kingdom.lands.forEach { land -> if (land.getCategory() == StandardLandCategory.NULL) { amount++ } };
+        var amount = 0
+        context.kingdom.lands.forEach { land -> if (land.getCategory() == StandardLandCategory.NULL) { amount++ } }
         amount
     }),
 
     KINGDOM_LAND_AMOUNT_CATEGORY(0, object : FunctionalPlaceholder() {
         @PlaceholderFunction
         fun of(context: KingdomsPlaceholderTranslationContext, @PlaceholderParameter(name = "category") category: String): Any {
-            Intrinsics.checkNotNullParameter(context, "")
-            Intrinsics.checkNotNullParameter(category, "")
-            val kingdom = context.getKingdom()
-            var amount : Int = 0
-            val standardCategory = LandCategoryRegistry.getLandCategoryFromConfigName(category)   //TODO
+            val kingdom = context.kingdom
+            var amount = 0
+            val standardCategory = LandCategoryRegistry.getLandCategoryFromConfigName(category)
 
             if (standardCategory === null) {
                 return 0
             }
 
-            kingdom.getLands().forEach { land: Land ->
+            kingdom.lands.forEach { land: Land ->
                 if (land.getCategory() == standardCategory) {
                     amount ++
                 }
@@ -155,10 +154,9 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
     }
     ),
 
-
-
     ;
 
+    private var GLOBAL_MACROS : Map<String, MessageContainer>
 
     @JvmField
     val IDENTIFIER: String = "auspices"
@@ -172,6 +170,7 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
     init {
         configuredDefaultValue = default
         KingdomsPlaceholderTranslator.register(this)
+        GLOBAL_MACROS = HashMap()
     }
 
     override fun getName(): String {
@@ -186,12 +185,12 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
         return configuredDefaultValue
     }
 
-    override fun setConfiguredDefaultValue(p0: Any?) {
-        configuredDefaultValue = p0
+    override fun setConfiguredDefaultValue(value: Any?) {
+        configuredDefaultValue = value
     }
 
-    override fun translate(p0: KingdomsPlaceholderTranslationContext?): Any {
-        return this.translator.invoke(p0)  //TODO null?
+    override fun translate(context: KingdomsPlaceholderTranslationContext): Any {
+        return this.translator.invoke(context)
     }
 
     override fun getFunctions(): MutableMap<String, FunctionalPlaceholder.CompiledFunction>? {
@@ -202,8 +201,17 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
     }
 
 
+
+
+
     companion object {
 
+
+        @JvmStatic
+        fun init() {
+
+
+        }
 
     }
 
