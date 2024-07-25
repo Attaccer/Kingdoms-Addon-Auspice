@@ -24,6 +24,7 @@ import top.mckingdom.auspice.land_categories.StandardLandCategory;
 import top.mckingdom.auspice.managers.BeaconEffectsManager;
 import top.mckingdom.auspice.managers.BoatUseManager;
 import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
+import top.mckingdom.auspice.services.ServiceBStats;
 import top.mckingdom.auspice.utils.MessengerUtil;
 
 import java.io.File;
@@ -31,6 +32,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class AuspiceAddon extends JavaPlugin implements Addon {
+
+    public static ServiceBStats BSTATS;
 
     private static AuspiceAddon instance;
 
@@ -50,6 +53,9 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
         LanguageManager.registerMessenger(AuspiceLang.class);
         StandardLandCategory.init();
+        StandardCostType.init();
+        KingdomPermissionRegister.init();
+        RelationAttributeRegister.init();
 
         getLogger().info("Addon is loading...");
 
@@ -65,8 +71,9 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
             return;
         }
 
-        KingdomPermissionRegister.init();
-        RelationAttributeRegister.init();
+        BSTATS = new ServiceBStats(this, 22764);
+
+
         getLogger().info("Addon is enabling...");
 
         if (KingdomsConfig.Claims.BEACON_PROTECTED_EFFECTS.getManager().getBoolean()) {
@@ -78,13 +85,10 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         getServer().getPluginManager().registerEvents(new BoatUseManager(), this);
 
 
-
         if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
             new CommandTransferMember();
         }
 
-        StandardCostType.init();
-        StandardLandCategory.init();
 
         MessengerUtil.lock();
 

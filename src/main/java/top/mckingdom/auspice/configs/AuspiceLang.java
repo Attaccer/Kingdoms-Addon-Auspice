@@ -6,7 +6,8 @@ import org.kingdoms.locale.messenger.DefinedMessenger;
 public enum AuspiceLang implements DefinedMessenger {
     COMMAND_TRANSFER_MEMBER_DESCRIPTION("{$s}Transfer members of your kingdom to another kingdom.", 1, 3),
     COMMAND_TRANSFER_MEMBER_USAGE("{$usage}transferMember <YourKingdomMember> <Kingdom>", 1, 3),
-    COMMAND_TRANSFER_MEMBER_OTHER_KINGDOM("{$e}You cannot transfer members of other kingdom!", 1, 3),
+    COMMAND_TRANSFER_MEMBER_OTHER_KINGDOM("{$e}You cannot transfer members of other kingdom.", 1, 3),
+    COMMAND_TRANSFER_MEMBER_RANK_PRIORITY("{$e}You cannot transfer members with higher rank priority than yourself.", 1, 3),
     COMMAND_TRANSFER_MEMBER_REQUEST_SUCCESS("{$s}Successfully sent a request to transfer members to the other kingdom.", 1, 3, 4),
     COMMAND_TRANSFER_MEMBER_DIRECT_SUCCESS("{$s}Successfully transferred member %player% to the other kingdom %kingdom%.", 1, 3, 4),
 

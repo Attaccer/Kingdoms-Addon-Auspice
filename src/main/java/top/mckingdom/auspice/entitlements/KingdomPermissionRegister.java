@@ -1,5 +1,6 @@
 package top.mckingdom.auspice.entitlements;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.player.KingdomPermission;
 import org.kingdoms.locale.messenger.DefinedMessenger;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public final class KingdomPermissionRegister {
 
+    private static int hashCount = 150;
     public static final XKingdomPermission PERMISSION_USE_BOATS = register("AuspiceAddon", "USE_BOATS", "You don't have permission to use boats", "Permission to use boats in land.");
     public static final XKingdomPermission PERMISSION_TRANSFER_MEMBERS = register("AuspiceAddon", "TRANSFER_MEMBERS");
 
@@ -20,7 +22,7 @@ public final class KingdomPermissionRegister {
      * @param keyword 你要注册的王国权限的关键字,只能全部大写英文字母和下划线,比如"ENDER_PEARL_TELEPORT"
      * @return 你所注册的王国权限的一个对象
      */
-    public static XKingdomPermission register(String namespace, String keyword) {
+    public static XKingdomPermission register(@org.intellij.lang.annotations.Pattern("[A-Za-z]{3,20}") @NonNull String namespace, @org.intellij.lang.annotations.Pattern("[A-Z0-9_]{3,100}") @NonNull String keyword) {
         return register(namespace, keyword, "{$e}You don't have permission " + keyword.toLowerCase() + "to do this.", "A kingdom permission: " + keyword);
     }
 
@@ -39,7 +41,7 @@ public final class KingdomPermissionRegister {
     }
 
     public static XKingdomPermission register(Namespace namespace, DefinedMessenger messenger, String defaultMessage, String defaultLore) {
-        return XKingdomPermission.reg(namespace, messenger, defaultMessage, defaultLore, Companion.permissions.size() + 90);
+        return XKingdomPermission.reg(namespace, messenger, defaultMessage, defaultLore, hashCount++) ;
     }
 
     public static void init() {
@@ -47,7 +49,5 @@ public final class KingdomPermissionRegister {
     }
 
 
-    private static class Companion {
-        public static final Map<Namespace, KingdomPermission> permissions = new HashMap<>();
-    }
+
 }

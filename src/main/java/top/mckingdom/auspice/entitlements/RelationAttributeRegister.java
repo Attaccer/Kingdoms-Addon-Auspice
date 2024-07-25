@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class RelationAttributeRegister {
 
+    private static int hashCount = 80;
     public static final RelationAttribute BEACON_EFFECTS = register("AuspiceAddon", "BEACON_EFFECTS");
     public static final RelationAttribute ENDER_PEARL_TELEPORT = register("AuspiceAddon", "ENDER_PEARL_TELEPORT");
     public static final RelationAttribute DIRECTLY_TRANSFER_MEMBERS = register("AuspiceAddon", "DIRECTLY_TRANSFER_MEMBERS");
@@ -36,11 +37,9 @@ public class RelationAttributeRegister {
     }
 
     public static XRelationAttribute register(Namespace namespace, String defaultLore) {
-        return XRelationAttribute.reg(namespace, defaultLore, Companion.attributes.size() + 31);
+        return XRelationAttribute.reg(namespace, defaultLore, hashCount++);
     }
 
-    private static class Companion {
-        public static final Map<Namespace, RelationAttribute> attributes = new HashMap<>();
-    }
+
 
 }
