@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.addons.Addon;
 import org.kingdoms.config.KingdomsConfig;
-import org.kingdoms.constants.group.model.relationships.RelationAttribute;
+import org.kingdoms.constants.land.Land;
 import org.kingdoms.constants.metadata.KingdomMetadataHandler;
 import org.kingdoms.constants.metadata.KingdomMetadataRegistry;
 import org.kingdoms.locale.LanguageManager;
@@ -27,6 +27,7 @@ import top.mckingdom.auspice.managers.BoatUseManager;
 import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
 import top.mckingdom.auspice.services.ServiceBStats;
 import top.mckingdom.auspice.utils.MessengerUtil;
+import static top.mckingdom.auspice.data.land.LandCategoryData.getCategory;
 
 import java.io.File;
 import java.util.HashSet;
@@ -90,7 +91,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
             new CommandTransferMember();
         }
 
-        LandCategoryPlaceholder.init();
+//        LandCategoryPlaceholder.init();
 
 
         MessengerUtil.lock();
@@ -109,6 +110,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
     @Override
     public void reloadAddon() {
+        new CommandTransferMember();
 
     }
 
