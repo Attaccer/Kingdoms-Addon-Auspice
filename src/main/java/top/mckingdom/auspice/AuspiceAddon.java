@@ -6,17 +6,20 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.addons.Addon;
+import org.kingdoms.commands.admin.CommandAdmin;
 import org.kingdoms.config.KingdomsConfig;
-import org.kingdoms.constants.land.Land;
 import org.kingdoms.constants.metadata.KingdomMetadataHandler;
 import org.kingdoms.constants.metadata.KingdomMetadataRegistry;
+import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.main.Kingdoms;
+import top.mckingdom.auspice.commands.admin.land_category.CommandAdminLandCategory;
+import top.mckingdom.auspice.commands.admin.relation_attribute_for_duoduojuzi.CommandAdminRelationAttribute;
 import top.mckingdom.auspice.commands.general.transfer_member.CommandTransferMember;
 import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.configs.CustomConfigValidators;
-import top.mckingdom.auspice.costs.StandardCostType;
+import top.mckingdom.auspice.costs.types.StandardCostType;
 import top.mckingdom.auspice.data.land.LandCategoryPlaceholder;
 import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
@@ -27,7 +30,6 @@ import top.mckingdom.auspice.managers.BoatUseManager;
 import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
 import top.mckingdom.auspice.services.ServiceBStats;
 import top.mckingdom.auspice.utils.MessengerUtil;
-import static top.mckingdom.auspice.data.land.LandCategoryData.getCategory;
 
 import java.io.File;
 import java.util.HashSet;
@@ -90,8 +92,10 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
             new CommandTransferMember();
         }
+        new CommandAdminLandCategory(CommandAdmin.getInstance());
+        new CommandAdminRelationAttribute(CommandAdmin.getInstance());
 
-//        LandCategoryPlaceholder.init();
+        LandCategoryPlaceholder.init();
 
 
         MessengerUtil.lock();
@@ -104,6 +108,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     @Override
     public void onDisable() {
         getLogger().info("Addon is disabling...");
+        BSTATS.shutdown();
         signalDisable();
         // Plugin shutdown logic
     }
@@ -119,19 +124,25 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         getLogger().info("Removing auspice addon metadata info...");
         KingdomMetadataRegistry.removeMetadata(Kingdoms.get().getDataCenter().getLandManager(), landMetadataHandlers);
 
-        Kingdoms.get().getDataCenter().getKingdomManager().getKingdoms().forEach(kingdom -> {     //处理王国的数据
+        Kingdoms.get().getDataCenter().getKingdomManager().getKingdoms().forEach(kingdom -> {
 
-            kingdom.getGroup().getAttributes().values().forEach(attrSet -> {    //去除每种外交关系里面的特定外交属性
+            kingdom.getGroup().getAttributes().values().forEach(attrSet -> {
                 attrSet.remove(RelationAttributeRegister.BEACON_EFFECTS);
                 attrSet.remove(RelationAttributeRegister.ENDER_PEARL_TELEPORT);
                 attrSet.remove(RelationAttributeRegister.DIRECTLY_TRANSFER_MEMBERS);
             });
 
-            kingdom.getRanks().forEach(rank -> {     //去除每个职级里面的特定王国权限
+            kingdom.getRanks().forEach(rank -> {
                 rank.getPermissions().remove(KingdomPermissionRegister.PERMISSION_TRANSFER_MEMBERS);
             });
 
+            ;
+
         });
+
+        //TODO get all lands of the server
+
+
 
     }
 
@@ -159,5 +170,11 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     }
 
 
+    /**
+     * Only use for this addon
+     */
+    public static Namespace buildNS(String s) {
+        return new Namespace("AuspiceAddon", s);
+    }
 
 }

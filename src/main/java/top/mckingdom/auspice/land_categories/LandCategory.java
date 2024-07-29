@@ -8,15 +8,13 @@ import org.kingdoms.locale.messenger.DefinedMessenger;
 
 public class LandCategory implements Namespaced {
 
-    private final DefinedMessenger nameMessenger;
-    private final DefinedMessenger descriptionMessenger;
+
     private int hash;
     private final Namespace ns;
 
-    public LandCategory(Namespace ns, DefinedMessenger nameMessenger, DefinedMessenger descriptionMessenger) {
+    public LandCategory(Namespace ns) {
         this.ns = ns;
-        this.nameMessenger = nameMessenger;
-        this.descriptionMessenger = descriptionMessenger;
+
     }
 
     @Override
@@ -42,9 +40,7 @@ public class LandCategory implements Namespaced {
         return this.ns.asString();
     }
 
-    public String getName(SupportedLanguage language) {
-        return LanguageManager.getRawMessage(this.nameMessenger, language);
-    }
+
 
     /**
      * 用于语言文件等场景
@@ -54,11 +50,5 @@ public class LandCategory implements Namespaced {
         return this.ns.getKey().toLowerCase().replace('_', '-');
     }
 
-    public DefinedMessenger getNameMessenger() {
-        return nameMessenger;
-    }
 
-    public DefinedMessenger getDescriptionMessenger() {
-        return descriptionMessenger;
-    }
 }

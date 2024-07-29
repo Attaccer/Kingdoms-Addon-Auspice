@@ -1,4 +1,4 @@
-package top.mckingdom.auspice.costs;
+package top.mckingdom.auspice.costs.types;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +10,10 @@ import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.libs.snakeyaml.validation.StandardValidator;
 import org.kingdoms.libs.xseries.XMaterial;
 import org.kingdoms.utils.config.CustomConfigValidators;
+import top.mckingdom.auspice.AuspiceAddon;
+import top.mckingdom.auspice.costs.Cost;
+import top.mckingdom.auspice.costs.CostRegistry;
+import top.mckingdom.auspice.costs.RefundableCost;
 import top.mckingdom.auspice.utils.ItemUtil;
 
 import java.util.List;
@@ -17,7 +21,7 @@ import java.util.Map;
 
 public class StandardCostType {
 
-    public static final Cost<KingdomPlayer, Long> COST_KINGDOM_PLAYER_KINGDOM_RP  = new RefundableCost<>(buildNS("KP_KINGDOM_RP")) {
+    public static final Cost<KingdomPlayer, Long> COST_KINGDOM_PLAYER_KINGDOM_RP  = new RefundableCost<>(AuspiceAddon.buildNS("KP_KINGDOM_RP")) {
         @Override
         public void refund(@NonNull KingdomPlayer kPlayer, @NonNull Long amount) {
             if (kPlayer.getKingdom() != null) {
@@ -47,7 +51,7 @@ public class StandardCostType {
      * 王国资源点
      */
     public static final RefundableCost<Kingdom, Long> COST_KINGDOM_RP = new RefundableCost<>(
-            buildNS("KINGDOM_RP"),
+            AuspiceAddon.buildNS("KINGDOM_RP"),
             CustomConfigValidators.getValidators().get(CustomConfigValidators.MATH.getValue())
     ) {
 
@@ -72,7 +76,7 @@ public class StandardCostType {
     /**
      * 王国的银行
      */
-    public static final Cost<Kingdom, Double> COST_KINGDOM_PLAYER_KINGDOM_BANK = new Cost<>(buildNS("KINGDOM_BANK")) {
+    public static final Cost<Kingdom, Double> COST_KINGDOM_PLAYER_KINGDOM_BANK = new Cost<>(AuspiceAddon.buildNS("KINGDOM_BANK")) {
 
         @Override
         public boolean canExpend(@NonNull Kingdom kingdom, @NonNull Double amount) {
@@ -90,7 +94,7 @@ public class StandardCostType {
      * 王国的银行
      */
     public static final Cost<Kingdom, Double> COST_KINGDOM_BANK = new Cost<>(
-            new Namespace("AuspiceAddon", "KINGDOM_BANK"),
+            AuspiceAddon.buildNS( "KINGDOM_BANK"),
             StandardValidator.NULL
     ) {
 
@@ -110,7 +114,9 @@ public class StandardCostType {
      * 王国的最大土地数量调节器
      * maxLandsModifier
      */
-    public static final Cost<Kingdom, Integer> COST_KINGDOM_MAX_LANDS_MODIFIER = new Cost<>(new Namespace("AuspiceAddon", "KINGDOM_MAX_LANDS_MODIFIER")) {
+    public static final Cost<Kingdom, Integer> COST_KINGDOM_MAX_LANDS_MODIFIER = new Cost<>(
+            AuspiceAddon.buildNS( "KINGDOM_MAX_LANDS_MODIFIER")
+    ) {
 
         @Override
         public boolean canExpend(@NonNull Kingdom kingdom, @NonNull Integer amount) {
@@ -134,7 +140,9 @@ public class StandardCostType {
      * 联邦的资源点
      * resource points of nation
      */
-    public static final Cost<Nation, Long> COST_NATION_RP = new Cost<>(new Namespace("AuspiceAddon", "NATION_RP")) {
+    public static final Cost<Nation, Long> COST_NATION_RP = new Cost<>(
+            AuspiceAddon.buildNS( "NATION_RP")
+    ) {
 
         @Override
         public boolean canExpend(@NonNull Nation nation, @NonNull Long amount) {

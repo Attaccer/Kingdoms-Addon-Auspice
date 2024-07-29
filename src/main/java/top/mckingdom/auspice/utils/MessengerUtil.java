@@ -20,7 +20,9 @@ public class MessengerUtil {
     private static boolean locked = false;
 
     /**
-     * @param path The Path of Language, such as "new String[]{"permissions", "jail"}" will make a path "permissions/jail"
+     * 新建一条语言新项目,
+     * 忽略大小写, 最终都会变成小写的
+     * @param path The Path of Language, such as "new String[]{"permissions", "JAIL"}" will make a path "permissions/jail"
      */
     public static DefinedMessenger createMessenger(String[] path, String defaultValue) {
 
@@ -79,7 +81,7 @@ public class MessengerUtil {
             for (String str : this.languageEntry.getPath()) {
                 out.append(str.toUpperCase().replace('-', '_')).append("_");
             }
-            out.deleteCharAt(out.length()-1);
+            out.deleteCharAt(out.length() - 1);   //移除尾部的  _
             return out.toString();
         }
 
