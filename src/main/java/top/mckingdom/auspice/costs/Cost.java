@@ -6,29 +6,24 @@ import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.namespace.Namespaced;
 import org.kingdoms.libs.snakeyaml.validation.NodeValidator;
 import org.kingdoms.libs.snakeyaml.validation.ValidationContext;
+import org.kingdoms.utils.config.ConfigSection;
+import top.mckingdom.auspice.AuspiceAddon;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class Cost<T, C> implements Namespaced {
 
     protected Namespace namespace;
-    protected NodeValidator validator;
 
     public Cost(Namespace namespace) {
         this.namespace = namespace;
-        this.validator = null;
     }
 
-    //Input the validator for easy calling when validating the Cost node
-    public Cost(Namespace namespace, NodeValidator validator) {
-        this.namespace = namespace;
-        this.validator = validator;
-    }
-
-
-
-    abstract public boolean canExpend(@NonNull T target, @NonNull C amount);
+    abstract public boolean canExpend(T target, C amount);
+    abstract public boolean canExpend(ConfigSection section);
 
 
     /**
@@ -36,46 +31,53 @@ public abstract class Cost<T, C> implements Namespaced {
      * @param target 要进行消费的对象，可以是一个玩家，可以是一个王国.
      * @param amount 消费的数量.
      */
-    abstract public void expend(@NonNull T target, @NonNull C amount);
-    public void expend(@NonNull T target, @NonNull Objects amount) {
-        this.expend(target, (C)amount);
-    }
+    abstract public void expend(T target, C amount);
+    abstract public void expend(ConfigSection section);
 
 
-    public static <T> boolean canExpend(T target, Map<Cost<T, ?>, Objects> costObjects) {
-        return true;
-    }
 
-    public static <T> void expend(T target, Map<Cost<T, ?>, Objects> costObjects) {
-        for (Cost<T, ?> cost : costObjects.keySet()) {
-            cost.expend(target, costObjects.get(cost));
+    public static CostResponse parse(ConfigSection costsSection) {
+        boolean a = true;
+        Set<Cost<?, ?>> successCosts = new HashSet<>();
+        Set<Cost<?, ?>> failedCost = new HashSet<>();
+
+        {
+            for (ConfigSection section : costsSection.getSections().values()) {
+                Cost<?, ?> cost = CostRegistry.INSTANCE.getRegistered(Namespace.fromString(section.getKey().getValue()));
+                if (cost == null) {
+                    System.out.println("Unknown Cost: " + section.getKey().getValue());
+                    a = false;
+                    continue;
+                }
+
+                if (!cost.canExpend(section.getSection())) {
+                    a = false;
+                    failedCost.add(cost.getInstance());
+                    continue;
+                } else {
+                    cost.expend(section.getSection());
+                    successCosts.add(cost.getInstance());
+                }
+
+            }
         }
+
+        if (a) {
+            return CostResponse.SUCCESS;
+        } else {
+            return new CostResponse(successCosts, failedCost);
+        }
+
     }
 
 
-    public C compile(ValidationContext context) {
-        this.validator.validate(context);
-        throw new UnsupportedOperationException();
-    }
-
-    public @Nullable NodeValidator getValidator() {
-        return validator;
-    }
-
-    public void setValidator(NodeValidator validator) {
-        this.validator = validator;
-    }
-
+    public abstract Cost<?, ?> getInstance();
 
     @Override
-    public Namespace getNamespace() {
+    public final Namespace getNamespace() {
         return this.namespace;
     }
 
-    @Override
-    public String toString() {
-        return "Cost[" + this.namespace.asString() + ']';
-    }
 }
 
 

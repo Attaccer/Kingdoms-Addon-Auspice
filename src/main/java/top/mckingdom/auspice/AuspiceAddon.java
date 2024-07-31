@@ -14,12 +14,12 @@ import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.commands.admin.land_category.CommandAdminLandCategory;
-import top.mckingdom.auspice.commands.admin.relation_attribute_for_duoduojuzi.CommandAdminRelationAttribute;
+import top.mckingdom.auspice.commands.admin.relation_attribute.CommandAdminRelationAttribute;
 import top.mckingdom.auspice.commands.general.transfer_member.CommandTransferMember;
 import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.configs.CustomConfigValidators;
-import top.mckingdom.auspice.costs.types.StandardCostType;
+import top.mckingdom.auspice.costs.std.StandardCostType;
 import top.mckingdom.auspice.data.land.LandCategoryPlaceholder;
 import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
@@ -80,13 +80,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
         getLogger().info("Addon is enabling...");
 
-        if (KingdomsConfig.Claims.BEACON_PROTECTED_EFFECTS.getManager().getBoolean()) {
-            getServer().getPluginManager().registerEvents(new BeaconEffectsManager(), this);
-            EntityPotionEffectEvent.getHandlerList().unregister(Kingdoms.get());
-        }
-        getServer().getPluginManager().registerEvents(new EnderPearlTeleportManager(), this);
-        PlayerTeleportEvent.getHandlerList().unregister(Kingdoms.get());
-        getServer().getPluginManager().registerEvents(new BoatUseManager(), this);
+        registerAllEvents();
 
 
         if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
@@ -110,11 +104,12 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         getLogger().info("Addon is disabling...");
         BSTATS.shutdown();
         signalDisable();
-        // Plugin shutdown logic
     }
 
     @Override
     public void reloadAddon() {
+        registerAllEvents();
+
         new CommandTransferMember();
 
     }
@@ -167,6 +162,19 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
     public LandCategoryRegistry getLandCategoryRegistry() {
         return this.landCategoryRegistry;
+    }
+
+    public void registerAllEvents() {
+
+        if (KingdomsConfig.Claims.BEACON_PROTECTED_EFFECTS.getManager().getBoolean()) {
+            getServer().getPluginManager().registerEvents(new BeaconEffectsManager(), this);
+            EntityPotionEffectEvent.getHandlerList().unregister(Kingdoms.get());
+        }
+        getServer().getPluginManager().registerEvents(new EnderPearlTeleportManager(), this);
+        PlayerTeleportEvent.getHandlerList().unregister(Kingdoms.get());
+        getServer().getPluginManager().registerEvents(new BoatUseManager(), this);
+
+
     }
 
 

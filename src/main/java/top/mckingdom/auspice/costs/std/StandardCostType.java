@@ -1,5 +1,6 @@
-package top.mckingdom.auspice.costs.types;
+package top.mckingdom.auspice.costs.std;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -147,6 +148,8 @@ public class StandardCostType {
         @Override
         public boolean canExpend(@NonNull Nation nation, @NonNull Long amount) {
             return nation.getResourcePoints() >= amount;
+
+
         }
         @Override
         public void expend(@NonNull Nation nation, @NonNull Long amount) {
