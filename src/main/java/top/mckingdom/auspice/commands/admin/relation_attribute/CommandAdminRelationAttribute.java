@@ -29,18 +29,6 @@ public class CommandAdminRelationAttribute extends KingdomsCommand {
     }
 
 
-    // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-    //======!! 将这个命令转为Kingdoms-1.16版本能执行的的命令需要做: 方法名 execute 改为 executeX
-
-    //管理员用处理数据的命令, 不会刻意检查语句的正确性, 管理员需要明白这条命令的用法, 否则会引起报错
-
-
-    //     如果我没弄错的话应该是这样
-
-    //     k admin relationAttribute testKingdom ALLY AuspiceAddon:beacon-effects true
-    //                                    ^        ^              ^                 ^
-    //                                 args[0]  args[1]        args[2]           args[3]
-    //
 
 
     @Override
@@ -58,7 +46,7 @@ public class CommandAdminRelationAttribute extends KingdomsCommand {
         KingdomRelation relation = KingdomRelation.valueOf(relationStr);
 
 
-        if (relation == KingdomRelation.SELF) {       //无效的, 永远执行不到的if语句
+        if (relation == KingdomRelation.SELF) {
             System.out.println("Can't edit attributes of SELF relation, because the SELF relation always have the all attributes.");
             return CommandResult.FAILED;
         }

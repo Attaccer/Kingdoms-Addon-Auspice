@@ -11,6 +11,7 @@ import org.kingdoms.config.KingdomsConfig;
 import org.kingdoms.constants.metadata.KingdomMetadataHandler;
 import org.kingdoms.constants.metadata.KingdomMetadataRegistry;
 import org.kingdoms.constants.namespace.Namespace;
+import org.kingdoms.locale.ContextualMessenger;
 import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.commands.admin.land_category.CommandAdminLandCategory;
@@ -20,6 +21,7 @@ import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.configs.CustomConfigValidators;
 import top.mckingdom.auspice.costs.std.StandardCostType;
+import top.mckingdom.auspice.data.land.LandCategories;
 import top.mckingdom.auspice.data.land.LandCategoryPlaceholder;
 import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
@@ -116,7 +118,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
     @Override
     public void uninstall() {
-        getLogger().info("Removing auspice addon metadata info...");
+        getLogger().info("Removing auspice addon metadata...");
         KingdomMetadataRegistry.removeMetadata(Kingdoms.get().getDataCenter().getLandManager(), landMetadataHandlers);
 
         Kingdoms.get().getDataCenter().getKingdomManager().getKingdoms().forEach(kingdom -> {

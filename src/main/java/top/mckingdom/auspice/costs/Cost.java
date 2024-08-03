@@ -24,6 +24,7 @@ public abstract class Cost<T, C> implements Namespaced {
 
     abstract public boolean canExpend(T target, C amount);
     abstract public boolean canExpend(ConfigSection section);
+    abstract public void canExpend(String str);
 
 
     /**
@@ -33,6 +34,8 @@ public abstract class Cost<T, C> implements Namespaced {
      */
     abstract public void expend(T target, C amount);
     abstract public void expend(ConfigSection section);
+    abstract public void expend(String str);
+
 
 
 

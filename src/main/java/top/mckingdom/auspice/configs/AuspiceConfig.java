@@ -14,6 +14,7 @@ import top.mckingdom.auspice.AuspiceAddon;
 public enum AuspiceConfig implements EnumConfig {
 
 
+    PROTECTED_ELYTRA,
     MEMBER_TRANSFER_ENABLED(2),
 
 

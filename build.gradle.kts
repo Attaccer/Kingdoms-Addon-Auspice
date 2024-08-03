@@ -41,25 +41,24 @@ dependencies {
     compileOnly("org.bstats:bstats-bukkit:3.0.2")
 
 
-    compileOnly(files("libs/PlayerInv-3.2.09.jar"))
-    compileOnly("cn.superiormc.enchantmentslots:EnchantmentSlots:1.0.0")
-    compileOnly(files("libs/EnchantmentSlots-2.4.0.jar"))
-    compileOnly(files("libs/original-EnchantSeparate-1.0-SNAPSHOT.jar"))
-    compileOnly(files("libs/[苦力怕论坛]Snow-EnchantSP-1.1.jar"))
-    compileOnly("mc.rellox:ExtractableEnchantments:11.2")
+
+//    compileOnly(files("libs/PlayerInv-3.2.09.jar"))
+//    compileOnly("cn.superiormc.enchantmentslots:EnchantmentSlots:1.0.0")
+//    compileOnly(files("libs/EnchantmentSlots-2.4.0.jar"))
+//    compileOnly(files("libs/original-EnchantSeparate-1.0-SNAPSHOT.jar"))
+//    compileOnly(files("libs/[苦力怕论坛]Snow-EnchantSP-1.1.jar"))
+//    compileOnly("mc.rellox:ExtractableEnchantments:11.2")
 
 }
 
-val targetJavaVersion = 21
+
+
+val targetJavaVersion = 17
 kotlin {
     jvmToolchain(targetJavaVersion)
 }
 
 tasks {
-
-//    shadowJar {
-//        relocate("kotlin", "org.kingdoms.libs.kotlin")
-//    }
 
     build {
         dependsOn("shadowJar")
@@ -71,12 +70,6 @@ tasks {
         filteringCharset = "UTF-8"
         filesMatching("plugin.yml") {
             expand(props)
-        }
-    }
-
-    shadowJar {
-        dependencies {
-            exclude("org.jetbrains:annotations")
         }
     }
 

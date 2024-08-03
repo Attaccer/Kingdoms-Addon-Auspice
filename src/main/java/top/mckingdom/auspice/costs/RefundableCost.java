@@ -5,9 +5,6 @@ import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.libs.snakeyaml.validation.NodeValidator;
 
 public abstract class RefundableCost<T, C> extends Cost<T, C> {
-    public RefundableCost(Namespace namespace, NodeValidator validator) {
-        super(namespace, validator);
-    }
 
     public RefundableCost(Namespace namespace) {
         super(namespace);
