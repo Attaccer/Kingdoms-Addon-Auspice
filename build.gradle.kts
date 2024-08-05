@@ -4,8 +4,8 @@ plugins {
 //    id("proguard")
 }
 
-group = "top.mckingdom"
-version = "1.1-SNAPSHOT"
+group = "top.mckingdom.auspice"
+version = "0.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -27,8 +27,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
     compileOnly(files("libs/kotlin-stdlib-2.0.20-Beta2-remapped.jar"))
     compileOnly(files("libs/KingdomsX-1.17.0-ALPHA.jar"))
     compileOnly(files("libs/xseries-11.2.0.1-remapped.jar"))
@@ -36,9 +38,10 @@ dependencies {
     compileOnly(files("libs/guava-33.2.1-jre-remapped.jar"))
     compileOnly(files("libs/gson-2.11.0-remapped.jar"))
     compileOnly(files("libs/caffeine-3.1.8-remapped.jar"))
+    compileOnly("org.bstats:bstats-bukkit:3.0.2")
+
 //    compileOnly "com.github.cryptomorin:kingdoms:1.16.8.1.1";
 //    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8");
-    compileOnly("org.bstats:bstats-bukkit:3.0.2")
 
 
 

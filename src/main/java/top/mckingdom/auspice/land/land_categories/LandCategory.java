@@ -1,10 +1,7 @@
-package top.mckingdom.auspice.land_categories;
+package top.mckingdom.auspice.land.land_categories;
 
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.namespace.Namespaced;
-import org.kingdoms.locale.LanguageManager;
-import org.kingdoms.locale.SupportedLanguage;
-import org.kingdoms.locale.messenger.DefinedMessenger;
 
 public class LandCategory implements Namespaced {
 

@@ -1,5 +1,6 @@
-package top.mckingdom.auspice.land_categories;
+package top.mckingdom.auspice.land.land_categories;
 
+import org.bukkit.plugin.RegisteredListener;
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.locale.SupportedLanguage;
@@ -7,7 +8,9 @@ import org.kingdoms.locale.messenger.DefinedMessenger;
 import top.mckingdom.auspice.AuspiceAddon;
 import top.mckingdom.auspice.utils.MessengerUtil;
 
-public final class StandardLandCategory extends LandCategory {
+import java.util.Locale;
+
+public class StandardLandCategory extends LandCategory {
 
     public static final LandCategory NONE = reg("NONE");
     public static final LandCategory WARFARE = reg("WARFARE");
@@ -32,14 +35,25 @@ public final class StandardLandCategory extends LandCategory {
 
     }
     private static LandCategory reg(String key) {
-        LandCategory landCategory = new StandardLandCategory(AuspiceAddon.buildNS(key),
-                MessengerUtil.createMessenger(new String[]{"lands", "land-category", key.toLowerCase().replace('_', '-'), "name"}, key),
-                MessengerUtil.createMessenger(new String[]{"lands", "land-category", key.toLowerCase().replace('_', '-'), "description"}, "A land category: " + key),
-                MessengerUtil.createMessenger(new String[]{"lands", "land-category", key.toLowerCase().replace('_', '-'), "lore"}, "A land category: " + key)
+        return register(AuspiceAddon.buildNS(key));
+    }
+
+    public static StandardLandCategory register(Namespace ns) {
+        String key = ns.getKey().toLowerCase(Locale.ENGLISH).replace('_', '-');
+        return register(ns,
+                MessengerUtil.createMessenger(new String[]{"lands", "land-category", key, "name"}, key),
+                MessengerUtil.createMessenger(new String[]{"lands", "land-category", key, "description"}, "A land category: " + key),
+                MessengerUtil.createMessenger(new String[]{"lands", "land-category", key, "lore"}, "A land category, it may has some abilities: " + key)
         );
+    }
+
+    protected static StandardLandCategory register(Namespace ns, DefinedMessenger nameMessenger, DefinedMessenger descriptionMessenger, DefinedMessenger loreMessenger) {
+        StandardLandCategory landCategory = new StandardLandCategory(ns, nameMessenger, descriptionMessenger, loreMessenger);
         AuspiceAddon.get().getLandCategoryRegistry().register(landCategory);
         return landCategory;
     }
+
+
 
     public String getName(SupportedLanguage language) {
         return LanguageManager.getRawMessage(this.nameMessenger, language);

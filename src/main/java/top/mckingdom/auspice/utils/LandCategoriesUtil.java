@@ -1,9 +1,8 @@
 package top.mckingdom.auspice.utils;
 
 import org.kingdoms.locale.SupportedLanguage;
-import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.AuspiceAddon;
-import top.mckingdom.auspice.land_categories.StandardLandCategory;
+import top.mckingdom.auspice.land.land_categories.StandardLandCategory;
 
 import java.util.ArrayList;
 import java.util.List;

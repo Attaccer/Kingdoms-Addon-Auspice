@@ -4,6 +4,7 @@ import org.kingdoms.commands.KingdomsParentCommand
 
 class CommandAdminLandCategory(parent: KingdomsParentCommand) : KingdomsParentCommand("landCategory", parent) {
     init {
-
+        CommandAdminLandCategoryGet(this)
+        CommandAdminLandCategorySet(this)
     }
 }

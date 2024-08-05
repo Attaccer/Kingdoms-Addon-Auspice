@@ -6,3 +6,4 @@ member-transfer:
   enabled: true
 
 
+protected-elytra: true

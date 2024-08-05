@@ -12,7 +12,6 @@ import org.kingdoms.events.lands.LandChangeEvent;
 import top.mckingdom.auspice.AuspiceAddon;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
-import top.mckingdom.land_protection.configs.LPLang;
 
 public class ElytraManager implements Listener {
 

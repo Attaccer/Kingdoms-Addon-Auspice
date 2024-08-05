@@ -8,7 +8,7 @@ import org.kingdoms.locale.SupportedLanguage
 import top.mckingdom.auspice.AuspiceAddon
 import top.mckingdom.auspice.configs.AuspiceLang
 import top.mckingdom.auspice.data.land.setCategory
-import top.mckingdom.auspice.land_categories.LandCategory
+import top.mckingdom.auspice.land.land_categories.LandCategory
 import top.mckingdom.auspice.utils.LandCategoriesUtil
 
 

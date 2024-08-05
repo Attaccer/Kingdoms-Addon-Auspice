@@ -17,29 +17,30 @@ import java.util.Set;
 public abstract class Cost<T, C> implements Namespaced {
 
     protected Namespace namespace;
+    protected Class<T> target;
 
-    public Cost(Namespace namespace) {
+    public Cost(Namespace namespace, Class<T> target) {
         this.namespace = namespace;
+        this.target = target;
+        CostRegistry.INSTANCE.register(this);
     }
 
     abstract public boolean canExpend(T target, C amount);
-    abstract public boolean canExpend(ConfigSection section);
-    abstract public void canExpend(String str);
+    abstract public boolean canExpend(T target, ConfigSection section);
 
 
     /**
      * 进行消费.
-     * @param target 要进行消费的对象，可以是一个玩家，可以是一个王国.
+     * @param target 要进行消费的对象, 可以是一个玩家, 可以是一个王国.
      * @param amount 消费的数量.
      */
     abstract public void expend(T target, C amount);
-    abstract public void expend(ConfigSection section);
-    abstract public void expend(String str);
+    abstract public void expend(T target, ConfigSection section);
 
 
 
 
-    public static CostResponse parse(ConfigSection costsSection) {
+    public static CostResponse parse(Object target, ConfigSection costsSection) {
         boolean a = true;
         Set<Cost<?, ?>> successCosts = new HashSet<>();
         Set<Cost<?, ?>> failedCost = new HashSet<>();
@@ -53,12 +54,22 @@ public abstract class Cost<T, C> implements Namespaced {
                     continue;
                 }
 
-                if (!cost.canExpend(section.getSection())) {
+                try {
+                    cost.target.cast(target);
+                } catch (ClassCastException e) {
+                    a = false;
+                    System.out.println("Can not use this cost: " + cost.namespace + " for Class: " + target.getClass());
+                    continue;
+                }
+
+
+
+                if (!cost.canExpend( (cost.target.cast(target)) , section.getSection())) {
                     a = false;
                     failedCost.add(cost.getInstance());
                     continue;
                 } else {
-                    cost.expend(section.getSection());
+                    cost.expend(target, section.getSection());
                     successCosts.add(cost.getInstance());
                 }
 
@@ -72,6 +83,7 @@ public abstract class Cost<T, C> implements Namespaced {
         }
 
     }
+
 
 
     public abstract Cost<?, ?> getInstance();

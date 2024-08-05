@@ -3,7 +3,6 @@ package top.mckingdom.auspice.data.land
 
 import org.bukkit.Chunk
 import org.bukkit.Location
-import org.jetbrains.annotations.NotNull
 import org.kingdoms.constants.KingdomsObject
 import org.kingdoms.constants.land.Land
 import org.kingdoms.constants.land.abstraction.data.DeserializationContext
@@ -15,12 +14,11 @@ import org.kingdoms.constants.namespace.Namespace
 import org.kingdoms.data.database.dataprovider.SectionCreatableDataSetter
 import org.kingdoms.data.database.dataprovider.SectionableDataGetter
 import org.kingdoms.libs.kotlin.jvm.functions.Function1
-import org.kingdoms.locale.compiler.container.MessageContainer
 import org.kingdoms.locale.placeholders.*
 import top.mckingdom.auspice.AuspiceAddon
-import top.mckingdom.auspice.land_categories.LandCategory
-import top.mckingdom.auspice.land_categories.LandCategoryRegistry
-import top.mckingdom.auspice.land_categories.StandardLandCategory
+import top.mckingdom.auspice.land.land_categories.LandCategory
+import top.mckingdom.auspice.land.land_categories.LandCategoryRegistry
+import top.mckingdom.auspice.land.land_categories.StandardLandCategory
 import java.util.*
 
 @JvmName("setCategory")
@@ -49,38 +47,34 @@ fun Chunk.getCategory(): LandCategory? {
 }
 
 @JvmName("getCategory")
-public fun SimpleChunkLocation.getCategory(): LandCategory? {
+fun SimpleChunkLocation.getCategory(): LandCategory? {
     return this.land?.getCategory()
 }
 
 
 /**
  * Get the category of a land
- * 不会返回null值
+ * If this land is not claimed, it will also return null
+ * If this land is claimed, it will return a not null value
  */
 @JvmName("getCategory")
-public fun Land.getCategory(): LandCategory {
-    val data = this.getCategoryData()
-    if (data == null) {
-        return StandardLandCategory.NONE
+fun Land.getCategory(): LandCategory? {
+    if (this.isClaimed()) {
+        return this.getCategoryData() ?: return StandardLandCategory.NONE
     } else {
-        return data
+        return null
     }
+
 }
 
 
 /**
- * 获取存储的数据, 可能会因为根本没存数据而返回null
+ * Get the data from the metadata,
+ * You shouldn't use it except you know how to use this function
  */
 @JvmName("getCategoryData")
 fun Land.getCategoryData() : LandCategory? {
-    val meta = this.getMetadata().get(LandCategoryMetaHandler.INSTANCE)
-    if (meta  == null) {
-        return null
-    } else {
-        return meta.getValue() as LandCategory
-    }
-
+    return this.getMetadata().get(LandCategoryMetaHandler.INSTANCE)?.getValue() as? LandCategory
 }
 
 
@@ -107,9 +101,8 @@ class LandCategoryMeta(private var landCategory: LandCategory) : KingdomMetadata
     }
 
     override fun shouldSave(container: KingdomsObject<*>): Boolean {
-//        return container instanceof Land;
-        return true
-    } //应该是用于限定ChunkTypeMeta存储的对象
+        return container is Land;
+    }
 }
 
 
@@ -133,7 +126,7 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
 
     LAND_LAND_CATEGORY(StandardLandCategory.NONE, { context -> context.land.getCategory() }),
 
-    KINGDOM_LAND_AMOUNT_CATEGORY_NULL(0, { context ->
+    KINGDOM_LAND_AMOUNT_CATEGORY_NONE(0, { context ->
         var amount = 0
         context.kingdom.lands.forEach { land -> if (land.getCategory() == StandardLandCategory.NONE) { amount++ } }
         amount
@@ -142,7 +135,7 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
     KINGDOM_LAND_AMOUNT_CATEGORY(0, object : FunctionalPlaceholder() {
         @PlaceholderFunction
         fun of(context: KingdomsPlaceholderTranslationContext, @PlaceholderParameter(name = "category") category: String): Any {
-            val kingdom = context.kingdom
+            val kingdom = context.getKingdom()
             var amount = 0
             val standardCategory = LandCategoryRegistry.getLandCategoryFromConfigName(category)
 
@@ -162,21 +155,12 @@ enum class LandCategoryPlaceholder(private val default : Any, private val transl
 
     ;
 
-    private var GLOBAL_MACROS : Map<String, MessageContainer>
-
-    @JvmField
-    val IDENTIFIER: String = "auspices"
-
-    @NotNull
-    @JvmField
-    val OTHER_IDENTIFIER: String = "other_"
 
     private var configuredDefaultValue : Any?
 
     init {
         configuredDefaultValue = default
         KingdomsPlaceholderTranslator.register(this)
-        GLOBAL_MACROS = HashMap()
     }
 
     override fun getName(): String {

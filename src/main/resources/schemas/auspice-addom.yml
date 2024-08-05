@@ -1,2 +1,5 @@
 member-transfer:
   enabled: bool
+
+
+protected-elytra: bool

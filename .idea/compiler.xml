@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="21">
-      <module name="top.mckingdom.auspice.Kingdoms-Addon-Auspice.main" target="17" />
+      <module name="top.mckingdom.Kingdoms-Addon-Auspice.main" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Kingdoms-Addon-Auspice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Kingdoms-Addon-Auspice.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/top.mckingdom.Kingdoms-Addon-Auspice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/top.mckingdom.Kingdoms-Addon-Auspice.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/top.mckingdom.auspice.Kingdoms-Addon-Auspice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/top.mckingdom.auspice.Kingdoms-Addon-Auspice.main.iml" />
     </modules>
   </component>
 </project>

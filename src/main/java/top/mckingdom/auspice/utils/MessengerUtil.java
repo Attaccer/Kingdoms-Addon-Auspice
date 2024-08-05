@@ -11,7 +11,9 @@ import org.kingdoms.locale.messenger.DefinedMessenger;
 import org.kingdoms.locale.provider.MessageProvider;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import static top.mckingdom.auspice.utils.MessengerUtil.Companion.constants;
 
@@ -20,9 +22,8 @@ public class MessengerUtil {
     private static boolean locked = false;
 
     /**
-     * 新建一条语言新项目,
-     * 忽略大小写, 最终都会变成小写的
-     * @param path The Path of Language, such as "new String[]{"permissions", "JAIL"}" will make a path "permissions/jail"
+     * Create a new DefinedMessenger object
+     * @param path The Path of Language, it will ignore case, such as "new String[]{"permissions", "JAIL"}" will make a path "permissions/jail"
      */
     public static DefinedMessenger createMessenger(String[] path, String defaultValue) {
 
@@ -49,7 +50,7 @@ public class MessengerUtil {
     }
 
     public static class Companion {
-        public static final ArrayList<DynamicLanguage> constants = new ArrayList<>();
+        public static final Set<DynamicLanguage> constants = new HashSet<>();
 
 
     }
@@ -65,7 +66,7 @@ public class MessengerUtil {
             constants.add(this);
         }
 
-        public ArrayList<DynamicLanguage> getConstants() {
+        public Set<DynamicLanguage> getConstants() {
             return constants;
         }
 

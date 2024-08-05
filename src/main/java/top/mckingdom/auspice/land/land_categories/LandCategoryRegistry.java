@@ -1,10 +1,9 @@
-package top.mckingdom.auspice.land_categories;
+package top.mckingdom.auspice.land.land_categories;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kingdoms.constants.namespace.Lockable;
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.namespace.NamespacedRegistry;
-import top.mckingdom.auspice.utils.MessengerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
