@@ -47,5 +47,8 @@ public class LandCategory implements Namespaced {
         return this.ns.getKey().toLowerCase().replace('_', '-');
     }
 
-
+    @Override
+    public String toString() {
+        return "LandCategory:{" + this.getConfigName() + '}';
+    }
 }

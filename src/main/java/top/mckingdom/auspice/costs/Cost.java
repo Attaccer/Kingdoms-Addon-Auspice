@@ -40,49 +40,49 @@ public abstract class Cost<T, C> implements Namespaced {
 
 
 
-    public static CostResponse parse(Object target, ConfigSection costsSection) {
-        boolean a = true;
-        Set<Cost<?, ?>> successCosts = new HashSet<>();
-        Set<Cost<?, ?>> failedCost = new HashSet<>();
-
-        {
-            for (ConfigSection section : costsSection.getSections().values()) {
-                Cost<?, ?> cost = CostRegistry.INSTANCE.getRegistered(Namespace.fromString(section.getKey().getValue()));
-                if (cost == null) {
-                    System.out.println("Unknown Cost: " + section.getKey().getValue());
-                    a = false;
-                    continue;
-                }
-
-                try {
-                    cost.target.cast(target);
-                } catch (ClassCastException e) {
-                    a = false;
-                    System.out.println("Can not use this cost: " + cost.namespace + " for Class: " + target.getClass());
-                    continue;
-                }
-
-
-
-                if (!cost.canExpend( (cost.target.cast(target)) , section.getSection())) {
-                    a = false;
-                    failedCost.add(cost.getInstance());
-                    continue;
-                } else {
-                    cost.expend(target, section.getSection());
-                    successCosts.add(cost.getInstance());
-                }
-
-            }
-        }
-
-        if (a) {
-            return CostResponse.SUCCESS;
-        } else {
-            return new CostResponse(successCosts, failedCost);
-        }
-
-    }
+//    public static CostResponse parse(Object target, ConfigSection costsSection) {
+//        boolean a = true;
+//        Set<Cost<?, ?>> successCosts = new HashSet<>();
+//        Set<Cost<?, ?>> failedCost = new HashSet<>();
+//
+//        {
+//            for (ConfigSection section : costsSection.getSections().values()) {
+//                Cost<?, ?> cost = CostRegistry.INSTANCE.getRegistered(Namespace.fromString(section.getKey().getValue()));
+//                if (cost == null) {
+//                    System.out.println("Unknown Cost: " + section.getKey().getValue());
+//                    a = false;
+//                    continue;
+//                }
+//
+//                try {
+//                    cost.target.cast(target);
+//                } catch (ClassCastException e) {
+//                    a = false;
+//                    System.out.println("Can not use this cost: " + cost.namespace + " for Class: " + target.getClass());
+//                    continue;
+//                }
+//
+//
+//
+//                if (!cost.canExpend( (cost.target.cast(target)) , section.getSection())) {
+//                    a = false;
+//                    failedCost.add(cost.getInstance());
+//                    continue;
+//                } else {
+//                    cost.expend(target, section.getSection());
+//                    successCosts.add(cost.getInstance());
+//                }
+//
+//            }
+//        }
+//
+//        if (a) {
+//            return CostResponse.SUCCESS;
+//        } else {
+//            return new CostResponse(successCosts, failedCost);
+//        }
+//
+//    }
 
 
 

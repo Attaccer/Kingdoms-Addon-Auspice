@@ -9,6 +9,8 @@ import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.locale.SupportedLanguage;
 import org.kingdoms.locale.messenger.DefinedMessenger;
 import org.kingdoms.locale.provider.MessageProvider;
+import org.kingdoms.main.KLogger;
+import top.mckingdom.auspice.AuspiceAddon;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,6 +28,11 @@ public class MessengerUtil {
      * @param path The Path of Language, it will ignore case, such as "new String[]{"permissions", "JAIL"}" will make a path "permissions/jail"
      */
     public static DefinedMessenger createMessenger(String[] path, String defaultValue) {
+
+        if (locked) {
+            AuspiceLogger.warn("Can not create messenger when auspice addon is already enabled");
+            return null;
+        }
 
         LinkedList<String> newPath = new LinkedList<>();
         for (String it : path) {

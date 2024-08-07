@@ -18,14 +18,16 @@ import top.mckingdom.auspice.commands.admin.relation_attribute.CommandAdminRelat
 import top.mckingdom.auspice.commands.general.transfer_member.CommandTransferMember;
 import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
-import top.mckingdom.auspice.configs.CustomConfigValidators;
-import top.mckingdom.auspice.data.land.LandCategoryPlaceholder;
+import top.mckingdom.auspice.configs.AuspicePlaceholder;
+import top.mckingdom.auspice.data.land.LandCategoryMetaHandler;
 import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
 import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
 import top.mckingdom.auspice.land.land_categories.LandCategoryRegistry;
 import top.mckingdom.auspice.land.land_categories.StandardLandCategory;
+import top.mckingdom.auspice.land.land_contractions.LandContractionRegistry;
 import top.mckingdom.auspice.managers.BeaconEffectsManager;
 import top.mckingdom.auspice.managers.BoatUseManager;
+import top.mckingdom.auspice.managers.ElytraManager;
 import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
 import top.mckingdom.auspice.services.ServiceBStats;
 import top.mckingdom.auspice.utils.MessengerUtil;
@@ -36,12 +38,13 @@ import java.util.Set;
 
 public final class AuspiceAddon extends JavaPlugin implements Addon {
 
-    public static ServiceBStats BSTATS;
+    public static ServiceBStats B_STATS;
 
     private static AuspiceAddon instance;
 
     private final Set<KingdomMetadataHandler> landMetadataHandlers = new HashSet<>();
     private final LandCategoryRegistry landCategoryRegistry = new LandCategoryRegistry();
+    private final LandContractionRegistry landContractionRegistry = new LandContractionRegistry();
 
     private static boolean enabled = false;
 
@@ -52,6 +55,12 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     @Override
     public void onLoad() {
         if (!isKingdomsLoaded()) return;
+
+        landMetadataHandlers.add(LandCategoryMetaHandler.Companion.getINSTANCE());
+
+        landMetadataHandlers.forEach( metaHandler -> {
+            Kingdoms.get().getMetadataRegistry().register(metaHandler);
+        } );
 
         LanguageManager.registerMessenger(AuspiceLang.class);
         StandardLandCategory.init();
@@ -72,23 +81,19 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
             return;
         }
 
-        BSTATS = new ServiceBStats(this, 22764);
+        B_STATS = new ServiceBStats(this, 22764);
 
 
         getLogger().info("Addon is enabling...");
 
+        getLogger().info("Registering event listeners...");
         registerAllEvents();
 
-
-        if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
-            new CommandTransferMember();
-        }
-        new CommandAdminLandCategory(CommandAdmin.getInstance());
-        new CommandAdminRelationAttribute(CommandAdmin.getInstance());
-
-        LandCategoryPlaceholder.init();
+        getLogger().info("Registering commands...");
+        registerAllCommands();
 
 
+        AuspicePlaceholder.init();
         MessengerUtil.lock();
 
         registerAddon();
@@ -99,15 +104,17 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     @Override
     public void onDisable() {
         getLogger().info("Addon is disabling...");
-        BSTATS.shutdown();
+        B_STATS.shutdown();
         signalDisable();
     }
 
     @Override
     public void reloadAddon() {
+        getLogger().info("Registering event listeners...");
         registerAllEvents();
 
-        new CommandTransferMember();
+        getLogger().info("Registering commands...");
+        registerAllCommands();
 
     }
 
@@ -161,16 +168,32 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         return this.landCategoryRegistry;
     }
 
+
     public void registerAllEvents() {
 
         if (KingdomsConfig.Claims.BEACON_PROTECTED_EFFECTS.getManager().getBoolean()) {
             getServer().getPluginManager().registerEvents(new BeaconEffectsManager(), this);
             EntityPotionEffectEvent.getHandlerList().unregister(Kingdoms.get());
         }
+
         getServer().getPluginManager().registerEvents(new EnderPearlTeleportManager(), this);
         PlayerTeleportEvent.getHandlerList().unregister(Kingdoms.get());
+
         getServer().getPluginManager().registerEvents(new BoatUseManager(), this);
 
+        if (AuspiceConfig.PROTECTED_ELYTRA.getManager().getBoolean()) {
+            getServer().getPluginManager().registerEvents(new ElytraManager(), this);
+        }
+
+    }
+
+    public void registerAllCommands() {
+
+        if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
+            new CommandTransferMember();
+        }
+        new CommandAdminLandCategory(CommandAdmin.getInstance());
+        new CommandAdminRelationAttribute(CommandAdmin.getInstance());
 
     }
 
@@ -182,4 +205,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         return new Namespace("AuspiceAddon", s);
     }
 
+    public LandContractionRegistry getLandContractionRegistry() {
+        return landContractionRegistry;
+    }
 }

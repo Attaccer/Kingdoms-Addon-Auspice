@@ -32,7 +32,8 @@ dependencies {
 
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
     compileOnly(files("libs/kotlin-stdlib-2.0.20-Beta2-remapped.jar"))
-    compileOnly(files("libs/KingdomsX-1.17.0-ALPHA.jar"))
+//    compileOnly(files("libs/KingdomsX-1.17.0-ALPHA.jar"))
+    compileOnly(files("libs/KingdomsX-1.17.1-ALPHA.jar"))
     compileOnly(files("libs/xseries-11.2.0.1-remapped.jar"))
     compileOnly(files("libs/hikari-5.1.0-remapped.jar"))
     compileOnly(files("libs/guava-33.2.1-jre-remapped.jar"))
