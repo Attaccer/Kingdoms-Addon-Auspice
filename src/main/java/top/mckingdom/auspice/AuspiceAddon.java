@@ -15,24 +15,27 @@ import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.commands.admin.land_category.CommandAdminLandCategory;
 import top.mckingdom.auspice.commands.admin.relation_attribute.CommandAdminRelationAttribute;
+import top.mckingdom.auspice.commands.general.land.CommandLand;
 import top.mckingdom.auspice.commands.general.transfer_member.CommandTransferMember;
 import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.configs.AuspicePlaceholder;
 import top.mckingdom.auspice.data.land.LandCategoryMetaHandler;
-import top.mckingdom.auspice.entitlements.KingdomPermissionRegister;
-import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
+import top.mckingdom.auspice.data.land.LandContractionMetaHandler;
+import top.mckingdom.auspice.utils.permissions.KingdomPermissionRegister;
+import top.mckingdom.auspice.utils.permissions.RelationAttributeRegister;
 import top.mckingdom.auspice.land.land_categories.LandCategoryRegistry;
 import top.mckingdom.auspice.land.land_categories.StandardLandCategory;
 import top.mckingdom.auspice.land.land_contractions.LandContractionRegistry;
-import top.mckingdom.auspice.managers.BeaconEffectsManager;
-import top.mckingdom.auspice.managers.BoatUseManager;
-import top.mckingdom.auspice.managers.ElytraManager;
-import top.mckingdom.auspice.managers.EnderPearlTeleportManager;
+import top.mckingdom.auspice.managers.land.BeaconEffectsManager;
+import top.mckingdom.auspice.managers.land.BoatUseManager;
+import top.mckingdom.auspice.managers.land.ElytraManager;
+import top.mckingdom.auspice.managers.land.EnderPearlTeleportManager;
 import top.mckingdom.auspice.services.ServiceBStats;
 import top.mckingdom.auspice.utils.MessengerUtil;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,8 +59,10 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     public void onLoad() {
         if (!isKingdomsLoaded()) return;
 
-        landMetadataHandlers.add(LandCategoryMetaHandler.Companion.getINSTANCE());
-
+        landMetadataHandlers.addAll(Arrays.asList(
+                LandCategoryMetaHandler.INSTANCE,
+                LandContractionMetaHandler.INSTANCE
+        ));
         landMetadataHandlers.forEach( metaHandler -> {
             Kingdoms.get().getMetadataRegistry().register(metaHandler);
         } );
@@ -194,6 +199,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
         }
         new CommandAdminLandCategory(CommandAdmin.getInstance());
         new CommandAdminRelationAttribute(CommandAdmin.getInstance());
+        new CommandLand();
 
     }
 

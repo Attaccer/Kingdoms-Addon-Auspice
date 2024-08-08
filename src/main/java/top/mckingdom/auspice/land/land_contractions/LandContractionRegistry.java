@@ -1,12 +1,26 @@
 package top.mckingdom.auspice.land.land_contractions;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.kingdoms.constants.namespace.Namespace;
+import org.kingdoms.constants.namespace.Lockable;
 import org.kingdoms.constants.namespace.NamespacedRegistry;
 
-import java.util.Map;
+public class LandContractionRegistry extends NamespacedRegistry<LandContraction> implements Lockable {
 
-public class LandContractionRegistry extends NamespacedRegistry<LandContraction> {
+    public static boolean unLocked = true;
 
+    public final void lock() {
+        if (!unLocked) {
+            throw new IllegalAccessError("Registers are already closed");
+        } else {
+            unLocked = false;
+        }
+    }
 
+    @Override
+    public void register(LandContraction contraction) {
+        if (unLocked) {
+            super.register(contraction);
+        } else {
+            throw new RuntimeException("Register is closed");   //TODO
+        }
+    }
 }

@@ -1,13 +1,7 @@
-package top.mckingdom.auspice.entitlements;
+package top.mckingdom.auspice.utils.permissions;
 
-import org.kingdoms.constants.group.Group;
 import org.kingdoms.constants.group.model.relationships.RelationAttribute;
-import org.kingdoms.constants.group.model.relationships.StandardRelationAttribute;
 import org.kingdoms.constants.namespace.Namespace;
-import org.kingdoms.main.Kingdoms;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RelationAttributeRegister {
 

@@ -1,14 +1,9 @@
-package top.mckingdom.auspice.entitlements;
+package top.mckingdom.auspice.utils.permissions;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.kingdoms.constants.namespace.Namespace;
-import org.kingdoms.constants.player.KingdomPermission;
 import org.kingdoms.locale.messenger.DefinedMessenger;
-import org.kingdoms.main.Kingdoms;
 import top.mckingdom.auspice.utils.MessengerUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class KingdomPermissionRegister {
 

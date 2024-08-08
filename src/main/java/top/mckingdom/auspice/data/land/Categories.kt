@@ -113,8 +113,8 @@ class LandCategoryMetaHandler private constructor() : KingdomMetadataHandler(Nam
     }
 
     companion object {
-        @JvmStatic
-        val INSTANCE: LandCategoryMetaHandler = LandCategoryMetaHandler()
+        @JvmField
+        val INSTANCE = LandCategoryMetaHandler()
     }
 }
 

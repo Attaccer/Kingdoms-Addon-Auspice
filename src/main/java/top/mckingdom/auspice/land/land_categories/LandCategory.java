@@ -2,8 +2,9 @@ package top.mckingdom.auspice.land.land_categories;
 
 import org.kingdoms.constants.namespace.Namespace;
 import org.kingdoms.constants.namespace.Namespaced;
+import org.kingdoms.locale.SupportedLanguage;
 
-public class LandCategory implements Namespaced {
+public abstract class LandCategory implements Namespaced {
 
 
     private int hash;
@@ -51,4 +52,7 @@ public class LandCategory implements Namespaced {
     public String toString() {
         return "LandCategory:{" + this.getConfigName() + '}';
     }
+
+    abstract String getName(SupportedLanguage lang);
+
 }

@@ -1,6 +1,7 @@
 @file:JvmName("LandContractions")
 package top.mckingdom.auspice.data.land
 
+import org.jetbrains.annotations.Contract
 import org.kingdoms.constants.base.KeyedKingdomsObject
 import org.kingdoms.constants.land.Land
 import org.kingdoms.constants.land.abstraction.data.DeserializationContext
@@ -56,6 +57,7 @@ fun Land.getContractions(player: KingdomPlayer) : Collection<LandContraction> {
  * if this land is claimed, it will return a not null value
  */
 @JvmName("getContractions")
+@Contract("not null -> not null")
 fun Land.getContractions(): ContractionsData? {
     if (this.isClaimed()) {
         val data = this.getContractionsData()
@@ -148,7 +150,7 @@ class LandContractionMetaHandler private constructor() : KingdomMetadataHandler(
     }
 
     companion object {
-        @JvmStatic
+        @JvmField
         val INSTANCE: LandContractionMetaHandler = LandContractionMetaHandler()
     }
 }

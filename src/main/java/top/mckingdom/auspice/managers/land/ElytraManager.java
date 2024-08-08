@@ -1,4 +1,4 @@
-package top.mckingdom.auspice.managers;
+package top.mckingdom.auspice.managers.land;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -11,7 +11,7 @@ import org.kingdoms.constants.player.KingdomPlayer;
 import org.kingdoms.events.lands.LandChangeEvent;
 import top.mckingdom.auspice.AuspiceAddon;
 import top.mckingdom.auspice.configs.AuspiceLang;
-import top.mckingdom.auspice.entitlements.RelationAttributeRegister;
+import top.mckingdom.auspice.utils.permissions.RelationAttributeRegister;
 
 public class ElytraManager implements Listener {
 
