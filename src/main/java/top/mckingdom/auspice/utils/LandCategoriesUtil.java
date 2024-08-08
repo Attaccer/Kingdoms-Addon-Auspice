@@ -13,7 +13,7 @@ public class LandCategoriesUtil {
 
         List<String> out = new ArrayList<>();
         AuspiceAddon.get().getLandCategoryRegistry().getRegistry().values().forEach( category -> {
-            String s = ((StandardLandCategory) category).getName(language);
+            String s = category.getName(language);
             if (s.startsWith(starts)) {
                 out.add(s);
             }

@@ -10,6 +10,8 @@ public final class KingdomPermissionRegister {
     private static int hashCount = 150;
     public static final XKingdomPermission PERMISSION_USE_BOATS = register("AuspiceAddon", "USE_BOATS", "You don't have permission to use boats", "Permission to use boats in land.");
     public static final XKingdomPermission PERMISSION_TRANSFER_MEMBERS = register("AuspiceAddon", "TRANSFER_MEMBERS");
+    public static final XKingdomPermission PERMISSION_MANAGE_LAND_CATEGORIES = register("AuspiceAddon", "MANAGE_LAND_CATEGORIES");
+    public static final XKingdomPermission PERMISSION_MANAGE_LAND_CONTRACTIONS = register("AuspiceAddon", "MANAGE_LAND_CONTRACTIONS");
 
     /**
      * 注册一个外交属性

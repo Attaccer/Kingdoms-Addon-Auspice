@@ -13,9 +13,11 @@ import org.kingdoms.constants.metadata.KingdomMetadataHandler
 import org.kingdoms.constants.namespace.Namespace
 import org.kingdoms.data.database.dataprovider.SectionCreatableDataSetter
 import org.kingdoms.data.database.dataprovider.SectionableDataGetter
+import org.kingdoms.locale.SupportedLanguage
 import top.mckingdom.auspice.AuspiceAddon
 import top.mckingdom.auspice.land.land_categories.LandCategory
 import top.mckingdom.auspice.land.land_categories.StandardLandCategory
+import top.mckingdom.auspice.utils.AuspiceLogger
 
 @JvmName("setCategory")
 fun Chunk.setCategory(landCategory: LandCategory) {
@@ -79,8 +81,37 @@ fun Land.clearCategoryData() {
     this.metadata.remove(LandCategoryMetaHandler.INSTANCE)
 }
 
+/**
+ * For command
+ */
+object Categories {
+    @JvmStatic
+    fun initialize() {
+        SupportedLanguage.entries.forEach { lang ->
+            if (lang.isInstalled()) {
+                categoriesString.put(lang, HashMap<String, LandCategory>().also {
+                    AuspiceAddon.get().getLandCategoryRegistry().getRegistry().forEach { _, category ->
+                        it.put(category.getName(lang), category)
+                    }
+                })
+            }
+        }
+    }
+    @JvmField
+    val categoriesString = HashMap<SupportedLanguage, HashMap<String, LandCategory>>()
 
+    @JvmStatic
+    fun getLandCategories(starts: String, language: SupportedLanguage?): List<String> {
+        val out: MutableList<String> = ArrayList()
+        categoriesString.get(language)?.keys?.forEach { category: String ->
+            if (category.startsWith(starts)) {
+                out.add(category)
+            }
+        }
+        return out
+    }
 
+}
 
 
 class LandCategoryMeta(private var landCategory: LandCategory) : KingdomMetadata {
@@ -108,7 +139,11 @@ class LandCategoryMetaHandler private constructor() : KingdomMetadataHandler(Nam
         dataGetter: DeserializationContext<SectionableDataGetter>
     ): KingdomMetadata {
         val chunkTypeNS = Namespace.fromString(dataGetter.dataProvider.asString())
-        val landCategory = AuspiceAddon.get().landCategoryRegistry.getRegistered(chunkTypeNS)
+        val landCategory = AuspiceAddon.get().getLandCategoryRegistry().getRegistered(chunkTypeNS)
+        if (landCategory == null) {
+            AuspiceLogger.warn("Unknown land contraction: " + dataGetter.dataProvider.asString() + ", ignore it")
+            return LandCategoryMeta(StandardLandCategory.NONE)
+        }
         return LandCategoryMeta(landCategory)
     }
 

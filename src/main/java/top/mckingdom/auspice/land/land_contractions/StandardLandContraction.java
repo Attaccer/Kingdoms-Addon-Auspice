@@ -2,6 +2,7 @@ package top.mckingdom.auspice.land.land_contractions;
 
 import org.bukkit.Bukkit;
 import org.kingdoms.constants.namespace.Namespace;
+import org.kingdoms.locale.LanguageManager;
 import org.kingdoms.locale.SupportedLanguage;
 import org.kingdoms.locale.messenger.DefinedMessenger;
 import top.mckingdom.auspice.AuspiceAddon;
@@ -12,6 +13,7 @@ import java.util.Locale;
 public class StandardLandContraction extends LandContraction{
 
     public static final StandardLandContraction MANAGE_CONTRACTIONS = register(AuspiceAddon.buildNS("MANAGE_CONTRACTIONS"));
+    public static final StandardLandContraction LAND_RULES = register(AuspiceAddon.buildNS("LAND_RULES"));
     public static final StandardLandContraction TURRETS = register(AuspiceAddon.buildNS("TURRETS"));
     public static final StandardLandContraction FARMING = register(AuspiceAddon.buildNS("FARMING"));
     public static final StandardLandContraction BUILD = register(AuspiceAddon.buildNS("BUILD"));
@@ -26,8 +28,8 @@ public class StandardLandContraction extends LandContraction{
     }
 
     @Override
-    public String getName(SupportedLanguage lang) {
-        return null;
+    public String getName(SupportedLanguage language) {
+        return LanguageManager.getRawMessage(this.nameMessenger, language);
     }
 
     public static StandardLandContraction register(Namespace ns) {

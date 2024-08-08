@@ -20,8 +20,11 @@ import top.mckingdom.auspice.commands.general.transfer_member.CommandTransferMem
 import top.mckingdom.auspice.configs.AuspiceConfig;
 import top.mckingdom.auspice.configs.AuspiceLang;
 import top.mckingdom.auspice.configs.AuspicePlaceholder;
+import top.mckingdom.auspice.data.land.Categories;
+import top.mckingdom.auspice.data.land.Contractions;
 import top.mckingdom.auspice.data.land.LandCategoryMetaHandler;
 import top.mckingdom.auspice.data.land.LandContractionMetaHandler;
+import top.mckingdom.auspice.land.land_contractions.StandardLandContraction;
 import top.mckingdom.auspice.utils.permissions.KingdomPermissionRegister;
 import top.mckingdom.auspice.utils.permissions.RelationAttributeRegister;
 import top.mckingdom.auspice.land.land_categories.LandCategoryRegistry;
@@ -69,6 +72,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
         LanguageManager.registerMessenger(AuspiceLang.class);
         StandardLandCategory.init();
+        StandardLandContraction.init();
         KingdomPermissionRegister.init();
         RelationAttributeRegister.init();
 
@@ -120,6 +124,7 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
 
         getLogger().info("Registering commands...");
         registerAllCommands();
+
 
     }
 
@@ -193,6 +198,9 @@ public final class AuspiceAddon extends JavaPlugin implements Addon {
     }
 
     public void registerAllCommands() {
+
+        Categories.initialize();
+        Contractions.initialize();
 
         if (AuspiceConfig.MEMBER_TRANSFER_ENABLED.getManager().getBoolean()) {
             new CommandTransferMember();

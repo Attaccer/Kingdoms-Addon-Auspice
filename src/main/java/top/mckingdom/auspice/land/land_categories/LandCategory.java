@@ -53,6 +53,6 @@ public abstract class LandCategory implements Namespaced {
         return "LandCategory:{" + this.getConfigName() + '}';
     }
 
-    abstract String getName(SupportedLanguage lang);
+    public abstract String getName(SupportedLanguage lang);
 
 }

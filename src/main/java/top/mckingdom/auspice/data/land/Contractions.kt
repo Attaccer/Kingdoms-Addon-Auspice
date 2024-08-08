@@ -12,8 +12,10 @@ import org.kingdoms.constants.namespace.Namespace
 import org.kingdoms.constants.player.KingdomPlayer
 import org.kingdoms.data.database.dataprovider.SectionCreatableDataSetter
 import org.kingdoms.data.database.dataprovider.SectionableDataGetter
+import org.kingdoms.locale.SupportedLanguage
 import top.mckingdom.auspice.AuspiceAddon
 import top.mckingdom.auspice.land.land_contractions.LandContraction
+import top.mckingdom.auspice.utils.AuspiceLogger
 import java.util.*
 
 typealias ContractionsData = HashMap<LandContraction, HashSet<UUID>>
@@ -110,6 +112,38 @@ fun Land.clearContractionsData() {
     this.getMetadata().remove(LandContractionMetaHandler.INSTANCE)
 }
 
+/**
+ * For command
+ */
+object Contractions {
+    @JvmStatic
+    fun initialize() {
+        SupportedLanguage.entries.forEach { lang ->
+            if (lang.isInstalled()) {
+                contractionsString.put(lang, HashMap<String, LandContraction>().also {
+                    AuspiceAddon.get().getLandContractionRegistry().getRegistry().forEach { _, contraction ->
+                        it.put(contraction.getName(lang), contraction)
+                    }
+                })
+            }
+        }
+    }
+    @JvmField
+    val contractionsString = HashMap<SupportedLanguage, HashMap<String, LandContraction>>()
+
+    @JvmStatic
+    fun getLandContractions(starts: String, language: SupportedLanguage?): List<String> {
+        val out: MutableList<String> = ArrayList()
+        contractionsString.get(language)?.keys?.forEach { contraction: String ->
+            if (contraction.startsWith(starts)) {
+                out.add(contraction)
+            }
+        }
+        return out
+    }
+
+}
+
 
 class LandContractionMeta(private var landContractions: ContractionsData) : KingdomMetadata {
     override fun getValue(): Any {
@@ -141,7 +175,11 @@ class LandContractionMetaHandler private constructor() : KingdomMetadataHandler(
         dataGetter: DeserializationContext<SectionableDataGetter>
     ): KingdomMetadata {
         return LandContractionMeta(dataGetter.getDataProvider().asMap(hashMapOf()) { map, key, value ->
-            val contraction : LandContraction = AuspiceAddon.get().landContractionRegistry.getRegistered(Namespace.fromConfigString(key.asString()))
+            val contraction : LandContraction? = AuspiceAddon.get().getLandContractionRegistry().getRegistered(Namespace.fromConfigString(key.asString()))
+            if (contraction == null) {
+                AuspiceLogger.warn("Unknown land contraction: " + key.asString() + ", ignore it")
+                return@asMap
+            }
             val players : HashSet<UUID> = value.asCollection(HashSet()) { set, dataGetter ->
                 set.add(dataGetter.asUUID())
             }

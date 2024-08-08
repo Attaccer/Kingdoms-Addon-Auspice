@@ -39,12 +39,14 @@ class CommandLandContractionGet(parent: KingdomsParentCommand): KingdomsCommand(
             }
             AuspiceLang.COMMAND_LAND_CONTRACTION_GET_SUCCESS_HEAD.sendMessage(sender, "location", "$x $z")
             land.getContractions()!!.forEach { entry ->
-                val linker = MessageObjectLinker()
-                val name = entry.key.getName(lang)
-                entry.value.forEach { uuid ->
-                    linker.add(KingdomPlayer.getKingdomPlayer(uuid).getPlayer().getName())
+                if (entry.value.size > 0) {
+                    val linker = MessageObjectLinker()
+                    val name = entry.key.getName(lang)
+                    entry.value.forEach { uuid ->
+                        linker.add(KingdomPlayer.getKingdomPlayer(uuid).getPlayer().getName())
+                    }
+                    AuspiceLang.COMMAND_LAND_CONTRACTION_GET_SUCCESS_BODY.sendMessage(sender, "contraction", name, "players", linker.build(context.messageContext))
                 }
-                AuspiceLang.COMMAND_LAND_CONTRACTION_GET_SUCCESS_BODY.sendMessage(sender, "contraction-name", name, "players", linker.build(context.messageContext))
             }
             AuspiceLang.COMMAND_LAND_CONTRACTION_GET_SUCCESS_END.sendMessage(sender, "location", "$x $z")
             return true
